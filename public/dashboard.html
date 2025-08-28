@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Affiliate Boss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+      .neon { color: #00ff88; }
+      .neon-border { border-color: #00ff88; }
+      .loading { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="w-64 bg-gray-800 min-h-screen p-6">
+            <div class="flex items-center space-x-3 mb-8">
+                <i class="fas fa-rocket text-2xl neon"></i>
+                <h1 class="text-xl font-bold neon">Affiliate Boss</h1>
+            </div>
+            <nav class="space-y-4">
+                <a href="#" onclick="showSection('overview')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" onclick="showSection('links')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-link"></i>
+                    <span>My Links</span>
+                </a>
+                <a href="#" onclick="showSection('create')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-plus"></i>
+                    <span>Create Link</span>
+                </a>
+                <a href="#" onclick="showSection('analytics')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-analytics"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" onclick="showSection('commissions')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Commissions</span>
+                </a>
+                <a href="#" onclick="showSection('payments')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="#" onclick="showSection('profile')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+            <div class="mt-8 pt-8 border-t border-gray-700">
+                <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 transition-colors w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Overview Section -->
+            <div id="overview-section" class="section active">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">Dashboard Overview</h2>
+                    <div class="flex space-x-3">
+                        <select id="periodSelector" onchange="updatePeriod()" class="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2">
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="1y">Last Year</option>
+                        </select>
+                        <button onclick="refreshData()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                            <i class="fas fa-refresh"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Total Clicks</p>
+                                <p class="text-2xl font-bold loading" id="totalClicks">Loading...</p>
+                                <p class="text-sm text-green-400" id="clicksChange">+0% vs last period</p>
+                            </div>
+                            <i class="fas fa-mouse-pointer text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Conversions</p>
+                                <p class="text-2xl font-bold loading" id="totalConversions">Loading...</p>
+                                <p class="text-sm text-green-400" id="conversionsChange">+0% vs last period</p>
+                            </div>
+                            <i class="fas fa-chart-line text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Conversion Rate</p>
+                                <p class="text-2xl font-bold loading" id="conversionRate">Loading...</p>
+                                <p class="text-sm text-green-400" id="rateChange">+0% vs last period</p>
+                            </div>
+                            <i class="fas fa-percentage text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Total Earnings</p>
+                                <p class="text-2xl font-bold loading" id="totalEarnings">Loading...</p>
+                                <p class="text-sm text-green-400" id="earningsChange">+0% vs last period</p>
+                            </div>
+                            <i class="fas fa-dollar-sign text-3xl neon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-green-600 to-green-700 p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-200">Current Balance</p>
+                                <p class="text-3xl font-bold" id="currentBalance">Loading...</p>
+                                <button onclick="requestPayout()" class="mt-2 bg-white text-green-700 px-4 py-2 rounded font-semibold hover:bg-gray-100">
+                                    Request Payout
+                                </button>
+                            </div>
+                            <i class="fas fa-wallet text-4xl text-green-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-700 p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-yellow-200">Pending Balance</p>
+                                <p class="text-3xl font-bold" id="pendingBalance">Loading...</p>
+                                <p class="text-sm text-yellow-200">Processing commissions</p>
+                            </div>
+                            <i class="fas fa-clock text-4xl text-yellow-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-600 to-purple-700 p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-200">Lifetime Earnings</p>
+                                <p class="text-3xl font-bold" id="lifetimeEarnings">Loading...</p>
+                                <p class="text-sm text-purple-200" id="performanceTier">Loading tier...</p>
+                            </div>
+                            <i class="fas fa-trophy text-4xl text-purple-200"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Performance Trend</h3>
+                        <canvas id="performanceChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Top Performing Links</h3>
+                        <div id="topLinksContainer">
+                            <div class="loading">Loading top links...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <div id="links-section" class="section hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">My Affiliate Links</h2>
+                    <button onclick="showSection('create')" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Create New Link
+                    </button>
+                </div>
+                
+                <div class="glass p-6 rounded-lg">
+                    <div id="linksList" class="space-y-4">
+                        <div class="loading">Loading your links...</div>
+                    </div>
+                    <div id="linksLoadMore" class="hidden mt-4 text-center">
+                        <button onclick="loadMoreLinks()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg">
+                            Load More Links
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Link Section -->
+            <div id="create-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Create New Affiliate Link</h2>
+                
+                <div class="glass p-6 rounded-lg max-w-2xl">
+                    <form id="createLinkForm">
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium mb-2">Original URL *</label>
+                            <input type="url" id="originalUrl" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none" placeholder="https://example.com/product" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium mb-2">Link Title</label>
+                            <input type="text" id="linkTitle" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none" placeholder="My Awesome Product">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium mb-2">Description</label>
+                            <textarea id="linkDescription" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none" rows="3" placeholder="Brief description of what you're promoting"></textarea>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium mb-2">Campaign Name</label>
+                            <input type="text" id="campaignName" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none" placeholder="Summer Sale 2024">
+                        </div>
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 px-8 py-3 rounded-lg font-semibold transition-colors">
+                            <i class="fas fa-rocket mr-2"></i>Generate Affiliate Link
+                        </button>
+                    </form>
+                    
+                    <div id="generatedLink" class="hidden mt-8 p-4 bg-green-900 bg-opacity-50 rounded-lg border border-green-500">
+                        <h3 class="font-bold mb-2">Your New Affiliate Link:</h3>
+                        <div class="flex items-center space-x-3">
+                            <input type="text" id="newLinkUrl" class="flex-1 bg-gray-700 px-3 py-2 rounded" readonly>
+                            <button onclick="copyLink()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button onclick="shareViaSMS()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded transition-colors">
+                                <i class="fas fa-sms"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Advanced Analytics</h2>
+                
+                <div class="grid md:grid-cols-1 gap-6">
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Performance Reports</h3>
+                        <div id="analyticsData">
+                            <div class="loading">Loading analytics...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commissions Section -->
+            <div id="commissions-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Commission History</h2>
+                
+                <div class="glass p-6 rounded-lg">
+                    <div id="commissionsData">
+                        <div class="loading">Loading commissions...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Section -->
+            <div id="payments-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Payment History</h2>
+                
+                <div class="glass p-6 rounded-lg">
+                    <div id="paymentsData">
+                        <div class="loading">Loading payments...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Profile & Settings</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Commission Profile</h3>
+                        <div id="commissionProfile">
+                            <div class="loading">Loading profile...</div>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Payout Settings</h3>
+                        <form id="payoutSettingsForm">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Minimum Payout Amount</label>
+                                <input type="number" id="minPayout" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3" placeholder="50.00" min="10" step="0.01">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Payout Frequency</label>
+                                <select id="payoutFreq" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="bi-weekly">Bi-weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Payout Method</label>
+                                <select id="payoutMethod" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3">
+                                    <option value="stripe">Stripe (Bank Transfer)</option>
+                                    <option value="paypal">PayPal</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="autoPayout" class="mr-2">
+                                    <span>Enable automatic payouts</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg">
+                                Save Settings
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payout Request Modal -->
+    <div id="payoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-gray-800 p-8 rounded-lg max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-neon">Request Payout</h2>
+                <button onclick="hidePayoutModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="payoutForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Payout Amount</label>
+                    <input type="number" id="payoutAmount" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3" placeholder="0.00" min="10" step="0.01" required>
+                    <p class="text-sm text-gray-400 mt-1">Available: $<span id="availableBalance">0.00</span></p>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Currency</label>
+                    <select id="payoutCurrency" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg">
+                    <i class="fas fa-paper-plane mr-2"></i>Request Payout
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let performanceChart = null;
+        let currentPage = 1;
+        let currentPeriod = '7d';
+        
+        // Check authentication
+        const token = localStorage.getItem('auth_token')
+        const isDemoMode = window.location.search.includes('demo=true')
+        
+        if (!token && !isDemoMode) {
+            window.location.href = '/'
+        }
+
+        // API headers
+        const getHeaders = () => ({
+            'Content-Type': 'application/json',
+            'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (token || 'demo-key')
+        })
+
+        // Show/hide sections
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden')
+                section.classList.remove('active')
+            })
+            
+            // Show selected section
+            const section = document.getElementById(sectionName + '-section')
+            section.classList.remove('hidden')
+            section.classList.add('active')
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active')
+            })
+            event.target.closest('.nav-item').classList.add('active')
+            
+            // Load section data
+            loadSectionData(sectionName)
+        }
+
+        // Load data for specific section
+        async function loadSectionData(section) {
+            switch(section) {
+                case 'overview':
+                    await loadDashboardKPIs()
+                    break
+                case 'links':
+                    await loadAffiliateLinks()
+                    break
+                case 'analytics':
+                    await loadAnalytics()
+                    break
+                case 'commissions':
+                    await loadCommissions()
+                    break
+                case 'payments':
+                    await loadPayments()
+                    break
+                case 'profile':
+                    await loadProfile()
+                    break
+            }
+        }
+
+        // Load dashboard KPIs
+        async function loadDashboardKPIs() {
+            try {
+                const response = await fetch(`/api/kpis/dashboard?period=${currentPeriod}`, {
+                    headers: getHeaders()
+                })
+                
+                if (response.ok) {
+                    const data = await response.json()
+                    updateDashboardUI(data)
+                } else {
+                    // Demo fallback
+                    updateDashboardUI({
+                        kpis: {
+                            clicks: 1247,
+                            unique_clicks: 982,
+                            conversions: 89,
+                            conversion_rate: 9.07,
+                            total_sales: 26262.00,
+                            earnings: 9191.70,
+                            avg_order_value: 295.07,
+                            earnings_per_click: 7.37
+                        },
+                        balances: {
+                            current: 248.60,
+                            pending: 103.95,
+                            lifetime: 1247.85,
+                            tier: 'gold'
+                        },
+                        top_links: [
+                            { title: 'Marketing Course', clicks: 245, conversion_rate: 12.5 },
+                            { title: 'SEO Tools', clicks: 189, conversion_rate: 8.9 },
+                            { title: 'Affiliate Guide', clicks: 167, conversion_rate: 15.2 }
+                        ],
+                        daily_performance: []
+                    })
+                }
+            } catch (error) {
+                console.error('Error loading KPIs:', error)
+                showDemoData()
+            }
+        }
+
+        function updateDashboardUI(data) {
+            // Update KPI cards
+            document.getElementById('totalClicks').textContent = (data.kpis.clicks || 0).toLocaleString()
+            document.getElementById('totalConversions').textContent = (data.kpis.conversions || 0).toLocaleString()
+            document.getElementById('conversionRate').textContent = (data.kpis.conversion_rate || 0).toFixed(2) + '%'
+            document.getElementById('totalEarnings').textContent = '$' + (data.kpis.earnings || 0).toFixed(2)
+            
+            // Update balance cards
+            document.getElementById('currentBalance').textContent = '$' + (data.balances.current || 0).toFixed(2)
+            document.getElementById('pendingBalance').textContent = '$' + (data.balances.pending || 0).toFixed(2)
+            document.getElementById('lifetimeEarnings').textContent = '$' + (data.balances.lifetime || 0).toFixed(2)
+            document.getElementById('performanceTier').textContent = (data.balances.tier || 'bronze').toUpperCase() + ' Tier'
+            document.getElementById('availableBalance').textContent = (data.balances.current || 0).toFixed(2)
+            
+            // Remove loading classes
+            document.querySelectorAll('.loading').forEach(el => {
+                el.classList.remove('loading')
+            })
+            
+            // Update top links
+            const topLinksHTML = data.top_links.map(link => `
+                <div class="flex justify-between items-center p-3 bg-gray-800 rounded mb-2">
+                    <div>
+                        <h4 class="font-semibold">${link.title || 'Untitled Link'}</h4>
+                        <p class="text-sm text-gray-400">${link.clicks} clicks</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-green-400 font-bold">${(link.conversion_rate || 0).toFixed(1)}%</span>
+                        <p class="text-xs text-gray-400">conversion</p>
+                    </div>
+                </div>
+            `).join('')
+            
+            document.getElementById('topLinksContainer').innerHTML = topLinksHTML || '<p class="text-gray-400">No links yet</p>'
+            
+            // Update performance chart
+            updatePerformanceChart(data.daily_performance || [])
+        }
+
+        function updatePerformanceChart(data) {
+            const ctx = document.getElementById('performanceChart').getContext('2d')
+            
+            if (performanceChart) {
+                performanceChart.destroy()
+            }
+            
+            // Generate sample data if empty
+            if (!data.length) {
+                const dates = []
+                const clicks = []
+                const conversions = []
+                
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+                    dates.push(date.toLocaleDateString())
+                    clicks.push(Math.floor(Math.random() * 100) + 50)
+                    conversions.push(Math.floor(Math.random() * 10) + 2)
+                }
+                
+                data = dates.map((date, i) => ({
+                    date,
+                    raw_clicks: clicks[i],
+                    conversions: conversions[i]
+                }))
+            }
+            
+            performanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: 'Clicks',
+                        data: data.map(d => d.raw_clicks || 0),
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Conversions',
+                        data: data.map(d => d.conversions || 0),
+                        borderColor: '#0066ff',
+                        backgroundColor: 'rgba(0, 102, 255, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'white' }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'white' } },
+                        y: { ticks: { color: 'white' } }
+                    }
+                }
+            })
+        }
+
+        async function loadAffiliateLinks() {
+            try {
+                const response = await fetch(`/api/links?page=${currentPage}&limit=10`, {
+                    headers: getHeaders()
+                })
+                
+                if (response.ok) {
+                    const data = await response.json()
+                    displayAffiliateLinks(data.links)
+                } else {
+                    displayDemoLinks()
+                }
+            } catch (error) {
+                displayDemoLinks()
+            }
+        }
+
+        function displayAffiliateLinks(links) {
+            const linksHTML = links.map(link => `
+                <div class="border border-gray-600 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-semibold">${link.title || 'Untitled Link'}</h3>
+                            <p class="text-sm text-gray-400">${link.campaign_name || 'No campaign'}</p>
+                            <p class="text-xs text-blue-400 mt-1">${link.full_link}</p>
+                        </div>
+                        <span class="bg-green-600 text-xs px-2 py-1 rounded">${link.status || 'Active'}</span>
+                    </div>
+                    <div class="flex justify-between text-sm mb-3">
+                        <span>Clicks: <strong>${link.clicks || 0}</strong></span>
+                        <span>Conversions: <strong>${link.conversions || 0}</strong></span>
+                        <span>Rate: <strong>${((link.conversions || 0) / Math.max(link.clicks || 1, 1) * 100).toFixed(1)}%</strong></span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="copyToClipboard('${link.full_link}')" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm">Copy</button>
+                        <button onclick="shareViaSMS('${link.full_link}')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm">SMS</button>
+                        <button onclick="viewLinkAnalytics('${link.id}')" class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm">Analytics</button>
+                    </div>
+                </div>
+            `).join('')
+            
+            document.getElementById('linksList').innerHTML = linksHTML || '<p class="text-gray-400">No links created yet</p>'
+        }
+
+        function displayDemoLinks() {
+            const demoLinks = [
+                { id: 1, title: 'Ultimate Marketing Course', full_link: 'https://affiliateboss.com/go/mkt001', clicks: 245, conversions: 31, status: 'Active' },
+                { id: 2, title: 'SEO Tools Suite', full_link: 'https://affiliateboss.com/go/seo001', clicks: 189, conversions: 17, status: 'Active' },
+                { id: 3, title: 'Affiliate Mastery Guide', full_link: 'https://affiliateboss.com/go/aff001', clicks: 167, conversions: 25, status: 'Active' }
+            ]
+            displayAffiliateLinks(demoLinks)
+        }
+
+        // Create link form
+        document.getElementById('createLinkForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const formData = {
+                url: document.getElementById('originalUrl').value,
+                title: document.getElementById('linkTitle').value,
+                description: document.getElementById('linkDescription').value,
+                campaign_name: document.getElementById('campaignName').value
+            }
+            
+            try {
+                const response = await fetch('/api/links', {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify(formData)
+                })
+                
+                const data = await response.json()
+                
+                if (data.success) {
+                    document.getElementById('newLinkUrl').value = data.link.full_link
+                    document.getElementById('generatedLink').classList.remove('hidden')
+                    document.getElementById('createLinkForm').reset()
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to create link'))
+                }
+            } catch (error) {
+                // Demo fallback
+                const demoLink = `https://affiliateboss.com/go/${Math.random().toString(36).substring(7)}`
+                document.getElementById('newLinkUrl').value = demoLink
+                document.getElementById('generatedLink').classList.remove('hidden')
+                document.getElementById('createLinkForm').reset()
+            }
+        })
+
+        // Payout form
+        document.getElementById('payoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const amount = parseFloat(document.getElementById('payoutAmount').value)
+            const currency = document.getElementById('payoutCurrency').value
+            
+            try {
+                const response = await fetch('/api/payments/payout', {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ amount, currency })
+                })
+                
+                const data = await response.json()
+                
+                if (data.success) {
+                    alert(`Payout request submitted! Payment ID: ${data.payment_id}`)
+                    hidePayoutModal()
+                    loadDashboardKPIs() // Refresh balances
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to process payout'))
+                }
+            } catch (error) {
+                alert('Demo: Payout request would be processed in production')
+                hidePayoutModal()
+            }
+        })
+
+        // Utility functions
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!')
+            })
+        }
+
+        function copyLink() {
+            const linkInput = document.getElementById('newLinkUrl')
+            linkInput.select()
+            document.execCommand('copy')
+            alert('Link copied to clipboard!')
+        }
+
+        function shareViaSMS(link = null) {
+            const linkToShare = link || document.getElementById('newLinkUrl').value
+            const message = `Check out this amazing offer: ${linkToShare}`
+            window.open(`sms:?body=${encodeURIComponent(message)}`)
+        }
+
+        function updatePeriod() {
+            currentPeriod = document.getElementById('periodSelector').value
+            loadDashboardKPIs()
+        }
+
+        function refreshData() {
+            const currentSection = document.querySelector('.section.active').id.replace('-section', '')
+            loadSectionData(currentSection)
+        }
+
+        function requestPayout() {
+            document.getElementById('payoutModal').classList.remove('hidden')
+        }
+
+        function hidePayoutModal() {
+            document.getElementById('payoutModal').classList.add('hidden')
+        }
+
+        function viewLinkAnalytics(linkId) {
+            showSection('analytics')
+            // Load specific link analytics
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token')
+            window.location.href = '/'
+        }
+
+        // Placeholder functions for other sections
+        async function loadAnalytics() {
+            document.getElementById('analyticsData').innerHTML = '<p class="text-gray-400">Advanced analytics coming soon...</p>'
+        }
+
+        async function loadCommissions() {
+            document.getElementById('commissionsData').innerHTML = '<p class="text-gray-400">Commission history coming soon...</p>'
+        }
+
+        async function loadPayments() {
+            document.getElementById('paymentsData').innerHTML = '<p class="text-gray-400">Payment history coming soon...</p>'
+        }
+
+        async function loadProfile() {
+            document.getElementById('commissionProfile').innerHTML = '<p class="text-gray-400">Profile loading...</p>'
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSectionData('overview')
+        })
+    </script>
+</body>
+</html>
