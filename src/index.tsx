@@ -2788,45 +2788,45 @@ app.get('/dashboard', (c) => {
                     return
                 }
                 
-                const linksHTML = links.map(link => \`
-                    <div class="border border-gray-600 rounded-lg p-4 hover:border-green-500 transition-colors">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="font-semibold">\${link.title || 'Untitled Link'}</h3>
-                                <p class="text-sm text-gray-400">\${link.campaign_name || 'No Campaign'}</p>
-                            </div>
-                            <span class="bg-\${link.status === 'active' ? 'green' : 'red'}-600 text-xs px-2 py-1 rounded">\${link.status || 'Active'}</span>
-                        </div>
-                        <div class="text-sm mb-3">
-                            <strong>Link:</strong> <span class="text-blue-400 break-all">\${link.full_link}</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 text-sm mb-3">
-                            <div class="text-center">
-                                <div class="text-lg font-bold text-green-400">\${(link.clicks || 0).toLocaleString()}</div>
-                                <div class="text-gray-400">Clicks</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-bold text-blue-400">\${(link.conversions || 0).toLocaleString()}</div>
-                                <div class="text-gray-400">Conversions</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-bold text-yellow-400">$\${(link.commission_total || 0).toFixed(2)}</div>
-                                <div class="text-gray-400">Earnings</div>
-                            </div>
-                        </div>
-                        <div class="mt-3 flex space-x-2">
-                            <button onclick="copyLinkToClipboard('\${link.full_link}')" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition-colors">
-                                <i class="fas fa-copy mr-1"></i>Copy
-                            </button>
-                            <button onclick="shareLinkViaSMS('\${link.full_link}', '\${link.title || ''}')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm transition-colors">
-                                <i class="fas fa-sms mr-1"></i>Share SMS
-                            </button>
-                            <button onclick="editLink(\${link.id})" class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors">
-                                <i class="fas fa-edit mr-1"></i>Edit
-                            </button>
-                        </div>
-                    </div>
-                \`).join('')
+                const linksHTML = links.map(link => 
+                    '<div class="border border-gray-600 rounded-lg p-4 hover:border-green-500 transition-colors">' +
+                        '<div class="flex justify-between items-start mb-3">' +
+                            '<div>' +
+                                '<h3 class="font-semibold">' + (link.title || 'Untitled Link') + '</h3>' +
+                                '<p class="text-sm text-gray-400">' + (link.campaign_name || 'No Campaign') + '</p>' +
+                            '</div>' +
+                            '<span class="bg-' + (link.status === 'active' ? 'green' : 'red') + '-600 text-xs px-2 py-1 rounded">' + (link.status || 'Active') + '</span>' +
+                        '</div>' +
+                        '<div class="text-sm mb-3">' +
+                            '<strong>Link:</strong> <span class="text-blue-400 break-all">' + link.full_link + '</span>' +
+                        '</div>' +
+                        '<div class="grid grid-cols-3 gap-4 text-sm mb-3">' +
+                            '<div class="text-center">' +
+                                '<div class="text-lg font-bold text-green-400">' + (link.clicks || 0).toLocaleString() + '</div>' +
+                                '<div class="text-gray-400">Clicks</div>' +
+                            '</div>' +
+                            '<div class="text-center">' +
+                                '<div class="text-lg font-bold text-blue-400">' + (link.conversions || 0).toLocaleString() + '</div>' +
+                                '<div class="text-gray-400">Conversions</div>' +
+                            '</div>' +
+                            '<div class="text-center">' +
+                                '<div class="text-lg font-bold text-yellow-400">$' + (link.commission_total || 0).toFixed(2) + '</div>' +
+                                '<div class="text-gray-400">Earnings</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="mt-3 flex space-x-2">' +
+                            '<button onclick="copyLinkToClipboard(\'' + link.full_link + '\')" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition-colors">' +
+                                '<i class="fas fa-copy mr-1"></i>Copy' +
+                            '</button>' +
+                            '<button onclick="shareLinkViaSMS(\'' + link.full_link + '\', \'Product\')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm transition-colors">' +
+                                '<i class="fas fa-sms mr-1"></i>Share SMS' +
+                            '</button>' +
+                            '<button onclick="editLink(' + link.id + ')" class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors">' +
+                                '<i class="fas fa-edit mr-1"></i>Edit' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>'
+                ).join('')
                 
                 document.getElementById('linksList').innerHTML = linksHTML
             }
@@ -3981,14 +3981,25 @@ app.get('/go/:shortCode', async (c) => {
     const currentHour = new Date().getHours()
     const today = new Date().toISOString().split('T')[0]
     
+    // Build dynamic SQL query for traffic source
+    const trafficColumn = `${trafficSource}_traffic`
     await c.env.DB.prepare(`
       INSERT INTO link_performance 
-      (link_id, date, hour, clicks, unique_clicks, ${trafficSource}_traffic)
-      VALUES (?, ?, ?, 1, ?, 1)
+      (link_id, date, hour, clicks, unique_clicks, direct_traffic, social_traffic, email_traffic, search_traffic, other_traffic)
+      VALUES (?, ?, ?, 1, ?, 
+        ${trafficSource === 'direct' ? '1' : '0'},
+        ${trafficSource === 'social' ? '1' : '0'}, 
+        ${trafficSource === 'email' ? '1' : '0'},
+        ${trafficSource === 'search' ? '1' : '0'},
+        ${trafficSource === 'other' ? '1' : '0'})
       ON CONFLICT(link_id, date, hour) DO UPDATE SET
         clicks = clicks + 1,
         unique_clicks = unique_clicks + ?,
-        ${trafficSource}_traffic = ${trafficSource}_traffic + 1
+        direct_traffic = direct_traffic + ${trafficSource === 'direct' ? '1' : '0'},
+        social_traffic = social_traffic + ${trafficSource === 'social' ? '1' : '0'},
+        email_traffic = email_traffic + ${trafficSource === 'email' ? '1' : '0'},
+        search_traffic = search_traffic + ${trafficSource === 'search' ? '1' : '0'},
+        other_traffic = other_traffic + ${trafficSource === 'other' ? '1' : '0'}
     `).bind(link.id, today, currentHour, isUnique ? 1 : 0, isUnique ? 1 : 0).run()
     
     // Update daily KPI stats
