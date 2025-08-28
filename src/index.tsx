@@ -1914,35 +1914,35 @@ app.get('/dashboard', (c) => {
                     <h1 class="text-xl font-bold neon">Affiliate Boss</h1>
                 </div>
                 <nav class="space-y-4">
-                    <a href="#" onclick="showSection('overview')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item active">
+                    <a href="#" onclick="showSection('overview', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item active">
                         <i class="fas fa-chart-line"></i>
                         <span>Overview</span>
                     </a>
-                    <a href="#" onclick="showSection('links')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('links', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-link"></i>
                         <span>My Links</span>
                     </a>
-                    <a href="#" onclick="showSection('create')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('create', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-plus"></i>
                         <span>Create Link</span>
                     </a>
-                    <a href="#" onclick="showSection('commissions')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('commissions', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-dollar-sign"></i>
                         <span>Commissions</span>
                     </a>
-                    <a href="#" onclick="showSection('payments')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('payments', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-credit-card"></i>
                         <span>Payments</span>
                     </a>
-                    <a href="#" onclick="showSection('integrations')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('integrations', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Store Integrations</span>
                     </a>
-                    <a href="#" onclick="showSection('commission-profiles')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('commission-profiles', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-percentage"></i>
                         <span>Commission Rules</span>
                     </a>
-                    <a href="#" onclick="showSection('profile')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <a href="#" onclick="showSection('profile', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
@@ -2014,7 +2014,7 @@ app.get('/dashboard', (c) => {
                 <div id="links-section" class="section hidden">
                     <div class="flex justify-between items-center mb-8">
                         <h2 class="text-3xl font-bold">My Affiliate Links</h2>
-                        <button onclick="showSection('create')" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition-colors">
+                        <button onclick="showSection('create', this)" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition-colors">
                             <i class="fas fa-plus mr-2"></i>Create New Link
                         </button>
                     </div>
@@ -2557,8 +2557,15 @@ app.get('/dashboard', (c) => {
             if (!token && !window.location.search.includes('demo=true')) {
                 window.location.href = '/'
             }
+            
+            // Test navigation functionality
+            window.testNavigation = function() {
+                console.log('Testing navigation...')
+                console.log('Sections found:', document.querySelectorAll('.section').length)
+                console.log('Nav items found:', document.querySelectorAll('.nav-item').length)
+            }
 
-            function showSection(sectionName) {
+            function showSection(sectionName, element) {
                 // Hide all sections
                 document.querySelectorAll('.section').forEach(section => {
                     section.classList.add('hidden')
@@ -2567,14 +2574,31 @@ app.get('/dashboard', (c) => {
                 
                 // Show selected section
                 const section = document.getElementById(sectionName + '-section')
-                section.classList.remove('hidden')
-                section.classList.add('active')
+                if (section) {
+                    section.classList.remove('hidden')
+                    section.classList.add('active')
+                }
                 
                 // Update navigation
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active')
                 })
-                event.target.closest('.nav-item').classList.add('active')
+                
+                // Find and activate the clicked nav item
+                if (element) {
+                    const navItem = element.closest('.nav-item')
+                    if (navItem) {
+                        navItem.classList.add('active')
+                    }
+                } else {
+                    // Fallback: find nav item by section name
+                    const navItems = document.querySelectorAll('.nav-item')
+                    navItems.forEach(item => {
+                        if (item.onclick && item.onclick.toString().includes(sectionName)) {
+                            item.classList.add('active')
+                        }
+                    })
+                }
                 
                 // Load section data
                 loadSectionData(sectionName)
@@ -2654,24 +2678,23 @@ app.get('/dashboard', (c) => {
                     document.getElementById('totalConversions').textContent = '89'
                     document.getElementById('totalEarnings').textContent = '$9,191.70'
                     
-                    document.getElementById('recentActivity').innerHTML = \`
-                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
-                            <span>📈 Dashboard loaded with real backend data</span>
-                            <span class="text-sm text-gray-400">Just now</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
-                            <span>💰 New commission: $149.10 from Marketing Course</span>
-                            <span class="text-sm text-gray-400">5 minutes ago</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
-                            <span>🔗 Affiliate link created: SEO Tools Suite</span>
-                            <span class="text-sm text-gray-400">1 hour ago</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
-                            <span>📊 KPI tracking system active</span>
-                            <span class="text-sm text-gray-400">2 hours ago</span>
-                        </div>
-                    \`
+                    document.getElementById('recentActivity').innerHTML = 
+                        '<div class="flex items-center justify-between p-3 bg-gray-800 rounded">' +
+                            '<span>📈 Dashboard loaded with real backend data</span>' +
+                            '<span class="text-sm text-gray-400">Just now</span>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between p-3 bg-gray-800 rounded">' +
+                            '<span>💰 New commission: $149.10 from Marketing Course</span>' +
+                            '<span class="text-sm text-gray-400">5 minutes ago</span>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between p-3 bg-gray-800 rounded">' +
+                            '<span>🔗 Affiliate link created: SEO Tools Suite</span>' +
+                            '<span class="text-sm text-gray-400">1 hour ago</span>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between p-3 bg-gray-800 rounded">' +
+                            '<span>📊 KPI tracking system active</span>' +
+                            '<span class="text-sm text-gray-400">2 hours ago</span>' +
+                        '</div>'
                 }
             }
             
@@ -2684,18 +2707,18 @@ app.get('/dashboard', (c) => {
                 
                 // Create enhanced recent activity with real data context
                 const activities = [
-                    \`📊 Total revenue tracked: $\${(data.kpis?.total_sales || 26262).toLocaleString()}\`,
-                    \`🎯 Conversion rate: \${(data.kpis?.conversion_rate || 9.07).toFixed(1)}%\`,
-                    \`💎 Performance tier: \${(data.balances?.tier || 'gold').toUpperCase()}\`,
-                    \`⚡ Earnings per click: $\${(data.kpis?.earnings_per_click || 7.37).toFixed(2)}\`
+                    '📊 Total revenue tracked: $' + (data.kpis?.total_sales || 26262).toLocaleString(),
+                    '🎯 Conversion rate: ' + (data.kpis?.conversion_rate || 9.07).toFixed(1) + '%',
+                    '💎 Performance tier: ' + (data.balances?.tier || 'gold').toUpperCase(),
+                    '⚡ Earnings per click: $' + (data.kpis?.earnings_per_click || 7.37).toFixed(2)
                 ]
                 
-                const activityHTML = activities.map((activity, i) => \`
-                    <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
-                        <span>\${activity}</span>
-                        <span class="text-sm text-gray-400">\${i * 15 + 2} min ago</span>
-                    </div>
-                \`).join('')
+                const activityHTML = activities.map((activity, i) => 
+                    '<div class="flex items-center justify-between p-3 bg-gray-800 rounded">' +
+                        '<span>' + activity + '</span>' +
+                        '<span class="text-sm text-gray-400">' + (i * 15 + 2) + ' min ago</span>' +
+                    '</div>'
+                ).join('')
                 
                 document.getElementById('recentActivity').innerHTML = activityHTML
             }
@@ -2757,12 +2780,11 @@ app.get('/dashboard', (c) => {
             
             function displayAffiliateLinks(links) {
                 if (!links || links.length === 0) {
-                    document.getElementById('linksList').innerHTML = \`
-                        <div class="text-center py-8 text-gray-400">
-                            <i class="fas fa-link text-4xl mb-4"></i>
-                            <p>No affiliate links yet. Create your first link to get started!</p>
-                        </div>
-                    \`
+                    document.getElementById('linksList').innerHTML = 
+                        '<div class="text-center py-8 text-gray-400">' +
+                            '<i class="fas fa-link text-4xl mb-4"></i>' +
+                            '<p>No affiliate links yet. Create your first link to get started!</p>' +
+                        '</div>'
                     return
                 }
                 
@@ -3018,16 +3040,15 @@ app.get('/dashboard', (c) => {
                 document.getElementById('paymentThreshold').textContent = '$' + (balanceInfo.threshold || 100).toFixed(2)
                 
                 // Update payment method info
-                document.getElementById('paymentMethodInfo').innerHTML = \`
-                    <div class="flex justify-between">
-                        <span class="text-gray-400">Method:</span>
-                        <span>\${balanceInfo.payment_method || 'Not set'}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-400">Status:</span>
-                        <span class="text-green-400">Active</span>
-                    </div>
-                \`
+                document.getElementById('paymentMethodInfo').innerHTML = 
+                    '<div class="flex justify-between">' +
+                        '<span class="text-gray-400">Method:</span>' +
+                        '<span>' + (balanceInfo.payment_method || 'Not set') + '</span>' +
+                    '</div>' +
+                    '<div class="flex justify-between">' +
+                        '<span class="text-gray-400">Status:</span>' +
+                        '<span class="text-green-400">Active</span>' +
+                    '</div>'
                 
                 // Update payout schedule
                 document.getElementById('payoutFrequency').textContent = balanceInfo.payout_frequency || 'Weekly'
@@ -3501,50 +3522,60 @@ app.get('/dashboard', (c) => {
                 const grid = document.getElementById('productsGrid')
                 
                 if (!products || products.length === 0) {
-                    grid.innerHTML = \`
-                        <div class="col-span-full text-center py-8 text-gray-400">
-                            <i class="fas fa-box text-4xl mb-4"></i>
-                            <p>No products found. Try syncing your store or adjusting filters.</p>
-                        </div>
-                    \`
+                    grid.innerHTML = 
+                        '<div class="col-span-full text-center py-8 text-gray-400">' +
+                            '<i class="fas fa-box text-4xl mb-4"></i>' +
+                            '<p>No products found. Try syncing your store or adjusting filters.</p>' +
+                        '</div>'
                     return
                 }
                 
                 const productsHTML = products.map(product => {
                     const images = Array.isArray(product.images) ? product.images : JSON.parse(product.images || '[]')
-                    const imageUrl = product.image_url || images[0] || '/placeholder-product.png'
+                    const imageUrl = product.image_url || images[0] || ''
                     const hasLink = product.has_affiliate_link
+                    const safeTitle = (product.title || '').replace(/'/g, "&apos;")
                     
-                    return \`
-                        <div class="glass p-4 rounded-lg hover:border-green-500 transition-colors border border-gray-600">
-                            <div class="aspect-square mb-3 overflow-hidden rounded-lg bg-gray-800 flex items-center justify-center">
-                                \${imageUrl && imageUrl !== '/placeholder-product.png' ? \`
-                                    <img src="\${imageUrl}" alt="\${product.title}" class="w-full h-full object-cover product-image" 
-                                         onerror="this.parentElement.innerHTML='<i class=\\"fas fa-box text-4xl text-gray-500\\"></i>'">
-                                \` : \`
-                                    <i class="fas fa-box text-4xl text-gray-500"></i>
-                                \`}
-                            </div>
-                            
-                            <h4 class="font-semibold text-sm mb-2 line-clamp-2">\${product.title}</h4>
-                            
-                            <div class="text-xs text-gray-400 mb-3">
-                                \${product.vendor ? \`<div><strong>Brand:</strong> \${product.vendor}</div>\` : ''}
-                                \${product.product_type ? \`<div><strong>Type:</strong> \${product.product_type}</div>\` : ''}
-                            </div>
-                            
-                            \${hasLink ? \`
-                                <button class="w-full bg-gray-600 text-gray-300 px-3 py-2 rounded text-sm cursor-not-allowed" disabled>
-                                    <i class="fas fa-check mr-1"></i>Link Created
-                                </button>
-                            \` : \`
-                                <button onclick="createProductLink(\${product.id}, '\${product.title.replace(/'/g, '\\\\\'')}')" 
-                                        class="w-full bg-green-600 hover:bg-green-700 px-3 py-2 rounded text-sm transition-colors">
-                                    <i class="fas fa-link mr-1"></i>Create Link
-                                </button>
-                            \`}
-                        </div>
-                    \`
+                    let imageHTML = ''
+                    if (imageUrl && imageUrl !== '/placeholder-product.png') {
+                        imageHTML = '<img src="' + imageUrl + '" alt="' + safeTitle + '" class="w-full h-full object-cover product-image" onerror="this.parentElement.innerHTML=\'<i class=&quot;fas fa-box text-4xl text-gray-500&quot;></i>\'">'
+                    } else {
+                        imageHTML = '<i class="fas fa-box text-4xl text-gray-500"></i>'
+                    }
+                    
+                    let brandHTML = ''
+                    if (product.vendor) {
+                        brandHTML = '<div><strong>Brand:</strong> ' + product.vendor + '</div>'
+                    }
+                    
+                    let typeHTML = ''
+                    if (product.product_type) {
+                        typeHTML = '<div><strong>Type:</strong> ' + product.product_type + '</div>'
+                    }
+                    
+                    let buttonHTML = ''
+                    if (hasLink) {
+                        buttonHTML = '<button class="w-full bg-gray-600 text-gray-300 px-3 py-2 rounded text-sm cursor-not-allowed" disabled>' +
+                                        '<i class="fas fa-check mr-1"></i>Link Created' +
+                                     '</button>'
+                    } else {
+                        buttonHTML = '<button onclick="createProductLink(' + product.id + ', &quot;' + safeTitle + '&quot;)" ' +
+                                        'class="w-full bg-green-600 hover:bg-green-700 px-3 py-2 rounded text-sm transition-colors">' +
+                                        '<i class="fas fa-link mr-1"></i>Create Link' +
+                                     '</button>'
+                    }
+                    
+                    return '<div class="glass p-4 rounded-lg hover:border-green-500 transition-colors border border-gray-600">' +
+                                '<div class="aspect-square mb-3 overflow-hidden rounded-lg bg-gray-800 flex items-center justify-center">' +
+                                    imageHTML +
+                                '</div>' +
+                                '<h4 class="font-semibold text-sm mb-2 line-clamp-2">' + (product.title || '') + '</h4>' +
+                                '<div class="text-xs text-gray-400 mb-3">' +
+                                    brandHTML +
+                                    typeHTML +
+                                '</div>' +
+                                buttonHTML +
+                           '</div>'
                 }).join('')
                 
                 grid.innerHTML = productsHTML
@@ -3870,6 +3901,11 @@ app.get('/dashboard', (c) => {
                 window.location.href = '/'
             }
 
+            // Debug: Check if functions are loaded
+            console.log('Dashboard JavaScript loaded')
+            console.log('showSection function:', typeof showSection)
+            console.log('loadSectionData function:', typeof loadSectionData)
+            
             // Load initial data
             loadSectionData('overview')
         </script>
