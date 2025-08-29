@@ -12,3 +12,4 @@
     { "src": "/(.*)", "dest": "/public/index.html" }
   ]
 }
+
