@@ -1,7 +1,7 @@
 // Dashboard KPIs API endpoint
-import { handleCORS, authenticateAPI, getFakeData } from '../_utils.js'
+const { handleCORS, authenticateAPI, getFakeData } = require('../_utils.js')
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   if (handleCORS(req, res)) return
 
   if (req.method !== 'GET') {

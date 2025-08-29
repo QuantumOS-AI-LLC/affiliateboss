@@ -1,7 +1,7 @@
 // User profile API
-import { handleCORS, authenticateAPI } from '../_utils.js'
+const { handleCORS, authenticateAPI } = require('../_utils.js')
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   if (handleCORS(req, res)) return
 
   // Authenticate user

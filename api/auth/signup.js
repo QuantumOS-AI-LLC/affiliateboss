@@ -1,7 +1,7 @@
 // User signup
-import { handleCORS, generateApiKey, hashPassword } from '../_utils.js'
+const { handleCORS, generateApiKey, hashPassword } = require('../_utils.js')
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (handleCORS(req, res)) return
 
   if (req.method !== 'POST') {

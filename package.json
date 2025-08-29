@@ -2,7 +2,7 @@
   "name": "affiliate-boss",
   "version": "2.0.0",
   "description": "Web 3.0 Affiliate Marketing Platform - Vercel Edition",
-  "type": "module",
+
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Build completed - no build process needed for Vercel functions'",

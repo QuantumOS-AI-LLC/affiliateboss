@@ -1,7 +1,7 @@
 // Send OTP code via SMS
-import { handleCORS } from '../_utils.js'
+const { handleCORS } = require('../_utils.js')
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   if (handleCORS(req, res)) return
 
   if (req.method !== 'POST') {

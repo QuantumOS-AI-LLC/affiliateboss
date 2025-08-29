@@ -1,26 +1,26 @@
 // Utility functions for Vercel API routes
-import crypto from 'crypto'
+const crypto = require('crypto')
 
 // Generate API key
-export const generateApiKey = () => `api_key_${Date.now()}_${Math.random().toString(36).substring(7)}`
+const generateApiKey = () => `api_key_${Date.now()}_${Math.random().toString(36).substring(7)}`
 
 // Generate short code for affiliate links
-export const generateShortCode = () => Math.random().toString(36).substring(2, 8)
+const generateShortCode = () => Math.random().toString(36).substring(2, 8)
 
 // Hash password (simplified for demo)
-export const hashPassword = async (password) => {
+const hashPassword = async (password) => {
   return crypto.createHash('sha256').update(password + 'affiliate_boss_salt').digest('hex')
 }
 
 // CORS headers
-export const corsHeaders = {
+const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key'
 }
 
 // Handle OPTIONS requests for CORS
-export const handleCORS = (req, res) => {
+const handleCORS = (req, res) => {
   if (req.method === 'OPTIONS') {
     res.status(200).json({})
     return true
@@ -35,7 +35,7 @@ export const handleCORS = (req, res) => {
 }
 
 // Authentication middleware for Vercel API routes
-export const authenticateAPI = (req, res) => {
+const authenticateAPI = (req, res) => {
   const apiKey = req.headers['x-api-key'] || req.query.api_key
   
   if (!apiKey) {
@@ -334,4 +334,16 @@ export const getFakeData = () => {
     commissionHistory: fakeCommissionHistory,
     dashboardKPIs: fakeDashboardKPIs
   }
+}
+
+// Export all functions for CommonJS
+module.exports = {
+  generateApiKey,
+  generateShortCode,
+  hashPassword,
+  corsHeaders,
+  handleCORS,
+  authenticateAPI,
+  calculateCommission,
+  getFakeData
 }
