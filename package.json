@@ -1,36 +1,14 @@
 {
   "name": "affiliate-boss",
   "version": "2.0.0",
-  "description": "Web 3.0 Affiliate Marketing Platform - Vercel Edition",
-
+  "description": "Affiliate Marketing Platform",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Build completed - no build process needed for Vercel functions'",
-    "start": "vercel dev",
-    "deploy": "vercel --prod",
-    "vercel-build": "echo 'Vercel build step completed'",
-    "test": "echo 'Demo mode: Visit dashboard with API key api_key_john_123456789'"
+    "build": "echo 'Static build'",
+    "deploy": "vercel --prod"
   },
-  "devDependencies": {
-    "@vercel/node": "^3.0.0",
-    "vercel": "^46.1.0"
-  },
+  "dependencies": {},
   "engines": {
-    "node": ">=18.0.0"
-  },
-  "keywords": [
-    "affiliate-marketing",
-    "web3",
-    "vercel",
-    "serverless",
-    "shopify",
-    "sms-otp"
-  ],
-  "author": "Affiliate Boss Team",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/affiliate-boss.git"
-  },
-  "homepage": "https://your-app.vercel.app"
+    "node": "18.x"
+  }
 }

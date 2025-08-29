@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Affiliate Boss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+      .neon { color: #00ff88; }
+      .neon-border { border-color: #00ff88; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="w-64 bg-gray-800 min-h-screen p-6">
+            <div class="flex items-center space-x-3 mb-8">
+                <i class="fas fa-rocket text-2xl neon"></i>
+                <h1 class="text-xl font-bold neon">Affiliate Boss</h1>
+            </div>
+            <nav class="space-y-4">
+                <a href="#" onclick="showSection('overview', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" onclick="showSection('links', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-link"></i>
+                    <span>My Links</span>
+                </a>
+                <a href="#" onclick="showSection('create', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-plus"></i>
+                    <span>Create Link</span>
+                </a>
+                <a href="#" onclick="showSection('commissions', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Commissions</span>
+                </a>
+                <a href="#" onclick="showSection('payments', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="#" onclick="showSection('integrations', this)" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Store Integrations</span>
+                </a>
+            </nav>
+            <div class="mt-8 pt-8 border-t border-gray-700">
+                <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 transition-colors w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Demo Mode Banner -->
+            <div class="bg-yellow-600 text-black p-4 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-info-circle mr-3"></i>
+                <span><strong>Demo Mode:</strong> You are viewing a demonstration with fake data. API Key: demo_key_123</span>
+            </div>
+
+            <!-- Overview Section -->
+            <div id="overview-section" class="section active">
+                <h2 class="text-3xl font-bold mb-8">Dashboard Overview</h2>
+                
+                <!-- Stats Cards -->
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Total Links</p>
+                                <p class="text-2xl font-bold">24</p>
+                            </div>
+                            <i class="fas fa-link text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Total Clicks</p>
+                                <p class="text-2xl font-bold">15,847</p>
+                            </div>
+                            <i class="fas fa-mouse-pointer text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Conversions</p>
+                                <p class="text-2xl font-bold">387</p>
+                            </div>
+                            <i class="fas fa-chart-line text-3xl neon"></i>
+                        </div>
+                    </div>
+                    <div class="glass p-6 rounded-lg neon-border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400">Total Earnings</p>
+                                <p class="text-2xl font-bold">$2,847.92</p>
+                            </div>
+                            <i class="fas fa-dollar-sign text-3xl neon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Performance Chart</h3>
+                        <canvas id="performanceChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Top Performing Links</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                <span>MacBook Pro M3 Max</span>
+                                <span class="neon">$1,529.40</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                <span>Tesla Model S Plaid</span>
+                                <span class="neon">$1,079.88</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                <span>iPhone 15 Pro Max</span>
+                                <span class="neon">$238.14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Link Section -->
+            <div id="create-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Create Affiliate Link</h2>
+                <div class="max-w-2xl">
+                    <form id="createLinkForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Original URL</label>
+                            <input type="url" id="originalUrl" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="https://example.com/product" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Link Name</label>
+                            <input type="text" id="linkName" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="My Product Link" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Description (Optional)</label>
+                            <textarea id="linkDescription" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="Brief description of this link"></textarea>
+                        </div>
+                        <button type="submit" class="bg-neon hover:bg-green-400 text-black px-8 py-3 rounded-lg font-semibold">
+                            <i class="fas fa-plus mr-2"></i>Create Link
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Links Section -->
+            <div id="links-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">My Affiliate Links</h2>
+                <div class="glass p-6 rounded-lg">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="text-left py-3">Link Name</th>
+                                    <th class="text-left py-3">Short URL</th>
+                                    <th class="text-left py-3">Clicks</th>
+                                    <th class="text-left py-3">Conversions</th>
+                                    <th class="text-left py-3">Earnings</th>
+                                    <th class="text-left py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="linksTable">
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3">MacBook Pro M3 Max Link</td>
+                                    <td class="py-3">
+                                        <a href="/go/mbp001" target="_blank" class="text-blue-400 hover:text-blue-300">
+                                            /go/mbp001
+                                        </a>
+                                    </td>
+                                    <td class="py-3">2,847</td>
+                                    <td class="py-3">45</td>
+                                    <td class="py-3">$1,529.40</td>
+                                    <td class="py-3">
+                                        <button onclick="copyLink('/go/mbp001')" class="text-neon hover:text-green-400 mr-2">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3">Tesla Model S Plaid</td>
+                                    <td class="py-3">
+                                        <a href="/go/tesla02" target="_blank" class="text-blue-400 hover:text-blue-300">
+                                            /go/tesla02
+                                        </a>
+                                    </td>
+                                    <td class="py-3">1,056</td>
+                                    <td class="py-3">9</td>
+                                    <td class="py-3">$1,079.88</td>
+                                    <td class="py-3">
+                                        <button onclick="copyLink('/go/tesla02')" class="text-neon hover:text-green-400 mr-2">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections -->
+            <div id="commissions-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Commission History</h2>
+                <div class="glass p-6 rounded-lg">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded">
+                            <div>
+                                <p class="font-semibold">MacBook Pro M3 Max</p>
+                                <p class="text-sm text-gray-400">Jan 28, 2024</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-neon">$339.92</p>
+                                <p class="text-sm text-green-400">Paid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="payments-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Payments</h2>
+                <div class="glass p-6 rounded-lg">
+                    <p class="text-center text-gray-400 py-8">Payment history will be displayed here.</p>
+                </div>
+            </div>
+
+            <div id="integrations-section" class="section hidden">
+                <h2 class="text-3xl font-bold mb-8">Store Integrations</h2>
+                <div class="glass p-6 rounded-lg">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded">
+                            <div>
+                                <p class="font-semibold">TechHub Premium</p>
+                                <p class="text-sm text-gray-400">techhub-premium.myshopify.com</p>
+                            </div>
+                            <span class="bg-green-600 text-white px-3 py-1 rounded text-sm">Connected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId, element) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden')
+                section.classList.remove('active')
+            })
+            
+            // Show selected section
+            const section = document.getElementById(sectionId + '-section')
+            if (section) {
+                section.classList.remove('hidden')
+                section.classList.add('active')
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active')
+            })
+            element.classList.add('active')
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            const ctx = document.getElementById('performanceChart').getContext('2d')
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Clicks',
+                        data: [1200, 1900, 3000, 2500, 2200, 3000],
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Conversions',
+                        data: [30, 45, 75, 62, 55, 75],
+                        borderColor: '#0066ff',
+                        backgroundColor: 'rgba(0, 102, 255, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'white' }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'white' } },
+                        y: { ticks: { color: 'white' } }
+                    }
+                }
+            })
+        }
+
+        // Create new link
+        document.getElementById('createLinkForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const formData = {
+                original_url: document.getElementById('originalUrl').value,
+                name: document.getElementById('linkName').value,
+                description: document.getElementById('linkDescription').value
+            }
+            
+            // Simulate API call
+            const shortCode = Math.random().toString(36).substring(2, 8)
+            alert(`Link created successfully! Short URL: /go/${shortCode}`)
+            document.getElementById('createLinkForm').reset()
+        })
+
+        // Utility functions
+        function copyLink(url) {
+            const fullUrl = window.location.origin + url
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert('Link copied to clipboard!')
+            })
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token')
+            window.location.href = '/'
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts()
+        })
+    </script>
+</body>
+</html>
