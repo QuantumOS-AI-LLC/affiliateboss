@@ -138,12 +138,15 @@ const authenticateAPI = async (c: any, next: any) => {
     // Create mock user for demo mode
     c.set('user', {
       id: 1,
-      username: 'demo_user',
-      email: 'demo@example.com',
+      username: 'john_demo',
+      email: 'john.demo@affiliateboss.com',
       first_name: 'John',
       last_name: 'Demo',
+      phone: '+1-555-0123',
       api_key: apiKey,
-      status: 'approved'
+      status: 'approved',
+      created_at: '2024-01-15T10:30:00Z',
+      last_login: new Date().toISOString()
     })
     await next()
     return
@@ -660,6 +663,145 @@ app.get('/api/links', authenticateAPI, async (c) => {
   const limit = parseInt(c.req.query('limit') || '20')
   const offset = (page - 1) * limit
   
+  // Return amazing fake affiliate links for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    const fakeLinks = [
+      {
+        id: 1,
+        title: 'Premium Marketing Course - Ultimate Bundle',
+        description: 'Comprehensive digital marketing course with lifetime access and bonuses',
+        campaign_name: 'Summer Education Sale 2024',
+        original_url: 'https://marketingpro.com/ultimate-course',
+        full_link: 'https://affiliateboss.com/go/mkt001',
+        short_code: 'mkt001',
+        clicks: 245,
+        conversions: 31,
+        commission_total: 1840.25,
+        conversion_rate: 12.65,
+        status: 'active',
+        created_at: '2024-08-15T14:22:00Z'
+      },
+      {
+        id: 2,
+        title: 'Advanced SEO Tools Suite Pro',
+        description: 'Professional SEO toolkit with keyword research, rank tracking, and competitor analysis',
+        campaign_name: 'Q3 Software Launch',
+        original_url: 'https://seotools.pro/premium-suite',
+        full_link: 'https://affiliateboss.com/go/seo002',
+        short_code: 'seo002',
+        clicks: 189,
+        conversions: 17,
+        commission_total: 1456.78,
+        conversion_rate: 8.99,
+        status: 'active',
+        created_at: '2024-08-14T09:15:00Z'
+      },
+      {
+        id: 3,
+        title: 'Affiliate Marketing Mastery Guide',
+        description: 'Step-by-step blueprint to building a 6-figure affiliate marketing business',
+        campaign_name: 'Affiliate Academy Promo',
+        original_url: 'https://affiliateacademy.com/mastery-guide',
+        full_link: 'https://affiliateboss.com/go/aff003',
+        short_code: 'aff003',
+        clicks: 167,
+        conversions: 25,
+        commission_total: 2145.90,
+        conversion_rate: 14.97,
+        status: 'active',
+        created_at: '2024-08-13T16:45:00Z'
+      },
+      {
+        id: 4,
+        title: 'E-commerce Automation Toolkit',
+        description: 'Complete automation suite for Shopify stores with inventory and order management',
+        campaign_name: 'Shopify Partners Program',
+        original_url: 'https://ecomtools.com/automation-kit',
+        full_link: 'https://affiliateboss.com/go/eco004',
+        short_code: 'eco004',
+        clicks: 134,
+        conversions: 15,
+        commission_total: 1678.45,
+        conversion_rate: 11.19,
+        status: 'active',
+        created_at: '2024-08-12T11:30:00Z'
+      },
+      {
+        id: 5,
+        title: 'Social Media Growth Accelerator',
+        description: 'AI-powered social media management with automated posting and analytics',
+        campaign_name: 'Influencer Tools Launch',
+        original_url: 'https://socialgrowth.ai/accelerator',
+        full_link: 'https://affiliateboss.com/go/soc005',
+        short_code: 'soc005',
+        clicks: 98,
+        conversions: 10,
+        commission_total: 987.32,
+        conversion_rate: 10.20,
+        status: 'active',
+        created_at: '2024-08-11T13:20:00Z'
+      },
+      {
+        id: 6,
+        title: 'WordPress Security Pro Plugin',
+        description: 'Advanced security plugin with malware scanning, firewall, and backup features',
+        campaign_name: 'Security Solutions Bundle',
+        original_url: 'https://wpsecuritypro.com/plugin',
+        full_link: 'https://affiliateboss.com/go/wp006',
+        short_code: 'wp006',
+        clicks: 87,
+        conversions: 8,
+        commission_total: 672.15,
+        conversion_rate: 9.20,
+        status: 'active',
+        created_at: '2024-08-10T08:45:00Z'
+      },
+      {
+        id: 7,
+        title: 'Email Marketing Automation Platform',
+        description: 'Professional email marketing with advanced segmentation and automation workflows',
+        campaign_name: 'Email Marketing Masters',
+        original_url: 'https://emailpro.com/platform',
+        full_link: 'https://affiliateboss.com/go/eml007',
+        short_code: 'eml007',
+        clicks: 156,
+        conversions: 19,
+        commission_total: 1234.67,
+        conversion_rate: 12.18,
+        status: 'active',
+        created_at: '2024-08-09T15:10:00Z'
+      },
+      {
+        id: 8,
+        title: 'Cryptocurrency Trading Masterclass',
+        description: 'Complete crypto trading course with live sessions and portfolio tracking',
+        campaign_name: 'Crypto Education Series',
+        original_url: 'https://cryptomasters.com/masterclass',
+        full_link: 'https://affiliateboss.com/go/cry008',
+        short_code: 'cry008',
+        clicks: 203,
+        conversions: 24,
+        commission_total: 2890.45,
+        conversion_rate: 11.82,
+        status: 'active',
+        created_at: '2024-08-08T12:30:00Z'
+      }
+    ]
+    
+    const paginatedLinks = fakeLinks.slice(offset, offset + limit)
+    
+    return c.json({
+      success: true,
+      links: paginatedLinks,
+      pagination: {
+        page,
+        limit,
+        total: fakeLinks.length,
+        pages: Math.ceil(fakeLinks.length / limit)
+      }
+    })
+  }
+  
   try {
     const links = await c.env.DB.prepare(`
       SELECT * FROM affiliate_links 
@@ -687,8 +829,54 @@ app.get('/api/kpis/dashboard', authenticateAPI, async (c) => {
   const user = c.get('user')
   const period = c.req.query('period') || '7d' // 7d, 30d, 90d, 1y
   
+  // Return amazing fake data for demo mode
+  if (user && user.api_key === 'api_key_john_123456789') {
+    let multiplier = 1
+    let days = 7
+    
+    switch(period) {
+      case '7d': multiplier = 1; days = 7; break
+      case '30d': multiplier = 4.2; days = 30; break
+      case '90d': multiplier = 12.8; days = 90; break
+      case '1y': multiplier = 52; days = 365; break
+    }
+    
+    return c.json({
+      success: true,
+      kpis: {
+        clicks: Math.round(1247 * multiplier),
+        unique_clicks: Math.round(982 * multiplier),
+        conversions: Math.round(89 * multiplier),
+        conversion_rate: 9.07,
+        total_sales: Math.round(26262.00 * multiplier),
+        earnings: Math.round(9191.70 * multiplier),
+        avg_order_value: 295.07,
+        earnings_per_click: 7.37
+      },
+      balances: {
+        current: 2480.60,
+        pending: 1039.95,
+        lifetime: Math.round(12478.85 * multiplier),
+        tier: 'platinum'
+      },
+      top_links: [
+        { id: 1, title: 'Premium Marketing Course', clicks: Math.round(245 * multiplier), conversion_rate: 12.5, earnings: Math.round(1840.25 * multiplier) },
+        { id: 2, title: 'Advanced SEO Tools Suite', clicks: Math.round(189 * multiplier), conversion_rate: 8.9, earnings: Math.round(1456.78 * multiplier) },
+        { id: 3, title: 'Affiliate Mastery Guide', clicks: Math.round(167 * multiplier), conversion_rate: 15.2, earnings: Math.round(2145.90 * multiplier) },
+        { id: 4, title: 'E-commerce Automation Kit', clicks: Math.round(134 * multiplier), conversion_rate: 11.3, earnings: Math.round(1678.45 * multiplier) },
+        { id: 5, title: 'Social Media Growth Pack', clicks: Math.round(98 * multiplier), conversion_rate: 9.8, earnings: Math.round(987.32 * multiplier) }
+      ],
+      daily_performance: Array.from({length: Math.min(days, 30)}, (_, i) => ({
+        date: new Date(Date.now() - (days - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        clicks: Math.round(45 + Math.random() * 60),
+        conversions: Math.round(3 + Math.random() * 8),
+        earnings: Math.round((285 + Math.random() * 400) * 100) / 100
+      }))
+    })
+  }
+  
   try {
-    // Calculate date range
+    // Calculate date range for real mode
     let days = 7
     switch(period) {
       case '30d': days = 30; break
@@ -1036,6 +1224,62 @@ app.get('/api/payments/history', authenticateAPI, async (c) => {
 
 // Get commission profiles
 app.get('/api/commission-profiles', authenticateAPI, async (c) => {
+  const user = c.get('user')
+  
+  // Return fake commission profiles for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    return c.json({
+      success: true,
+      profiles: [
+        {
+          id: 1,
+          name: 'Standard Affiliate',
+          description: 'Basic commission structure for new affiliates',
+          base_rate: 15.0,
+          status: 'active',
+          tier_structure: {
+            tiers: [
+              { threshold: 0, rate: 15.0 },
+              { threshold: 1000, rate: 20.0 },
+              { threshold: 5000, rate: 25.0 }
+            ]
+          },
+          created_at: '2024-01-15T10:00:00Z'
+        },
+        {
+          id: 2,
+          name: 'Premium Partner',
+          description: 'Enhanced rates for established affiliates',
+          base_rate: 25.0,
+          status: 'active',
+          tier_structure: {
+            tiers: [
+              { threshold: 0, rate: 25.0 },
+              { threshold: 2000, rate: 30.0 },
+              { threshold: 10000, rate: 35.0 }
+            ]
+          },
+          created_at: '2024-01-20T14:30:00Z'
+        },
+        {
+          id: 3,
+          name: 'Platinum Elite',
+          description: 'Highest tier for top-performing affiliates',
+          base_rate: 35.0,
+          status: 'active',
+          tier_structure: {
+            tiers: [
+              { threshold: 0, rate: 35.0 },
+              { threshold: 5000, rate: 40.0 },
+              { threshold: 25000, rate: 50.0 }
+            ]
+          },
+          created_at: '2024-02-01T09:15:00Z'
+        }
+      ]
+    })
+  }
+  
   try {
     const profiles = await c.env.DB.prepare(`
       SELECT id, name, description, default_rate, tier_structure, 
@@ -1064,6 +1308,86 @@ app.get('/api/commissions', authenticateAPI, async (c) => {
   const user = c.get('user')
   const period = c.req.query('period') || '30d'
   const limit = parseInt(c.req.query('limit') || '50')
+  
+  // Return fake commission data for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    const fakeCommissions = [
+      {
+        id: 1,
+        link_title: 'Premium Marketing Course',
+        order_value: 297.00,
+        commission_value: 89.10,
+        commission_rate: 30.0,
+        status: 'confirmed',
+        converted_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'john.customer@example.com'
+      },
+      {
+        id: 2,
+        link_title: 'Advanced SEO Tools Suite',
+        order_value: 199.99,
+        commission_value: 39.99,
+        commission_rate: 20.0,
+        status: 'confirmed',
+        converted_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'sarah.buyer@example.com'
+      },
+      {
+        id: 3,
+        link_title: 'Affiliate Mastery Guide',
+        order_value: 497.00,
+        commission_value: 248.50,
+        commission_rate: 50.0,
+        status: 'confirmed',
+        converted_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'mike.learner@example.com'
+      },
+      {
+        id: 4,
+        link_title: 'E-commerce Automation Kit',
+        order_value: 599.00,
+        commission_value: 119.80,
+        commission_rate: 20.0,
+        status: 'pending',
+        converted_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'alex.store@example.com'
+      },
+      {
+        id: 5,
+        link_title: 'Social Media Growth Pack',
+        order_value: 149.99,
+        commission_value: 22.50,
+        commission_rate: 15.0,
+        status: 'confirmed',
+        converted_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'lisa.social@example.com'
+      },
+      {
+        id: 6,
+        link_title: 'MacBook Pro 16" M3 Max',
+        order_value: 3999.00,
+        commission_value: 199.95,
+        commission_rate: 5.0,
+        status: 'confirmed',
+        converted_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+        customer_email: 'tech.enthusiast@example.com'
+      }
+    ]
+    
+    const totals = {
+      total_commissions: fakeCommissions.reduce((sum, c) => sum + c.commission_value, 0),
+      pending_commissions: fakeCommissions.filter(c => c.status === 'pending').reduce((sum, c) => sum + c.commission_value, 0),
+      confirmed_commissions: fakeCommissions.filter(c => c.status === 'confirmed').reduce((sum, c) => sum + c.commission_value, 0),
+      total_orders: fakeCommissions.length,
+      avg_commission: fakeCommissions.reduce((sum, c) => sum + c.commission_value, 0) / fakeCommissions.length
+    }
+    
+    return c.json({
+      success: true,
+      commissions: fakeCommissions.slice(0, limit),
+      totals
+    })
+  }
   
   try {
     let days = 30
@@ -1152,6 +1476,47 @@ app.get('/api/payments/history', authenticateAPI, async (c) => {
 app.get('/api/profile', authenticateAPI, async (c) => {
   const user = c.get('user')
   
+  // Return enhanced fake profile for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    return c.json({
+      success: true,
+      name: 'John Demo',
+      email: 'john.demo@affiliateboss.com',
+      phone: '+1-555-DEMO-123',
+      country: 'United States',
+      city: 'San Francisco',
+      timezone: 'America/Los_Angeles',
+      api_key: 'api_key_john_123456789',
+      commission_profile: 'platinum',
+      member_since: '2024-01-15',
+      total_earnings: 12478.85,
+      current_tier: 'Platinum Affiliate',
+      next_tier: 'Diamond Elite',
+      settings: {
+        email_notifications: true,
+        sms_notifications: true,
+        weekly_reports: true,
+        conversion_alerts: true,
+        payout_notifications: true,
+        marketing_updates: false
+      },
+      payout_info: {
+        method: 'bank_transfer',
+        frequency: 'weekly',
+        min_amount: 100.00,
+        next_payout_date: '2024-09-06',
+        pending_amount: 1039.95
+      },
+      performance_stats: {
+        links_created: 47,
+        total_clicks: 5847,
+        total_conversions: 389,
+        best_month: 'August 2024',
+        avg_conversion_rate: 9.07
+      }
+    })
+  }
+  
   try {
     return c.json({
       success: true,
@@ -1220,6 +1585,35 @@ app.post('/api/commission-profiles', authenticateAPI, async (c) => {
 // Get user's store integrations
 app.get('/api/integrations', authenticateAPI, async (c) => {
   const user = c.get('user')
+  
+  // Return fake store integrations for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    return c.json({
+      success: true,
+      integrations: [
+        {
+          id: 1,
+          platform: 'shopify',
+          store_name: 'techgear-pro',
+          store_url: 'https://techgear-pro.myshopify.com',
+          status: 'connected',
+          last_sync_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+          created_at: '2024-08-15T10:30:00Z',
+          products_count: 24
+        },
+        {
+          id: 2,
+          platform: 'shopify',
+          store_name: 'fashion-forward',
+          store_url: 'https://fashion-forward.myshopify.com',
+          status: 'connected',
+          last_sync_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+          created_at: '2024-08-10T14:20:00Z',
+          products_count: 18
+        }
+      ]
+    })
+  }
   
   try {
     const integrations = await c.env.DB.prepare(`
@@ -1450,6 +1844,293 @@ app.get('/api/integrations/:integrationId/products', authenticateAPI, async (c) 
   const search = c.req.query('search') || ''
   const category = c.req.query('category') || ''
   
+  // Return amazing fake products for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    const fakeProducts = [
+      {
+        id: 1,
+        shopify_id: '7234567890123',
+        title: 'MacBook Pro 16" M3 Max',
+        description: 'Latest MacBook Pro with M3 Max chip, 32GB RAM, 1TB SSD. Perfect for professionals and creators.',
+        price: 3999.00,
+        compare_price: 4299.00,
+        vendor: 'Apple',
+        product_type: 'Electronics',
+        tags: 'laptop, apple, macbook, professional, m3',
+        handle: 'macbook-pro-16-m3-max',
+        product_url: 'https://techgear-pro.myshopify.com/products/macbook-pro-16-m3-max',
+        image_url: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 15,
+        category: 'Electronics'
+      },
+      {
+        id: 2,
+        shopify_id: '7234567890124',
+        title: 'Sony WH-1000XM5 Wireless Headphones',
+        description: 'Industry-leading noise canceling with premium sound quality and up to 30 hours battery life.',
+        price: 399.99,
+        compare_price: 449.99,
+        vendor: 'Sony',
+        product_type: 'Electronics',
+        tags: 'headphones, wireless, noise-canceling, sony, audio',
+        handle: 'sony-wh-1000xm5-headphones',
+        product_url: 'https://techgear-pro.myshopify.com/products/sony-wh-1000xm5-headphones',
+        image_url: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1545127398-14699f92334b?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 42,
+        category: 'Electronics'
+      },
+      {
+        id: 3,
+        shopify_id: '7234567890125',
+        title: 'iPhone 15 Pro Max 256GB',
+        description: 'Latest iPhone with A17 Pro chip, titanium design, and advanced camera system with 5x telephoto zoom.',
+        price: 1199.00,
+        compare_price: 1299.00,
+        vendor: 'Apple',
+        product_type: 'Electronics',
+        tags: 'iphone, apple, smartphone, pro, titanium',
+        handle: 'iphone-15-pro-max-256gb',
+        product_url: 'https://techgear-pro.myshopify.com/products/iphone-15-pro-max-256gb',
+        image_url: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 28,
+        category: 'Electronics'
+      },
+      {
+        id: 4,
+        shopify_id: '7234567890126',
+        title: 'Samsung 65" QLED 4K Smart TV',
+        description: 'Stunning 4K QLED display with Quantum HDR and smart features powered by Tizen OS.',
+        price: 1799.99,
+        compare_price: 2199.99,
+        vendor: 'Samsung',
+        product_type: 'Electronics',
+        tags: 'tv, samsung, qled, 4k, smart-tv, entertainment',
+        handle: 'samsung-65-qled-4k-smart-tv',
+        product_url: 'https://techgear-pro.myshopify.com/products/samsung-65-qled-4k-smart-tv',
+        image_url: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 8,
+        category: 'Electronics'
+      },
+      {
+        id: 5,
+        shopify_id: '7234567890127',
+        title: 'Tesla Model S Plaid Performance Package',
+        description: 'The fastest production car ever made with 1,020 horsepower and 0-60 mph in 1.99 seconds.',
+        price: 129990.00,
+        compare_price: 139990.00,
+        vendor: 'Tesla',
+        product_type: 'Automotive',
+        tags: 'tesla, electric, car, performance, luxury, plaid',
+        handle: 'tesla-model-s-plaid-performance',
+        product_url: 'https://techgear-pro.myshopify.com/products/tesla-model-s-plaid-performance',
+        image_url: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 2,
+        category: 'Automotive'
+      },
+      {
+        id: 6,
+        shopify_id: '7234567890128',
+        title: 'Gaming Desk Setup Pro with RGB',
+        description: 'Ultimate gaming setup with motorized sit-stand desk, RGB lighting, and cable management system.',
+        price: 899.99,
+        compare_price: 1199.99,
+        vendor: 'GamerDesk Pro',
+        product_type: 'Furniture',
+        tags: 'gaming, desk, rgb, setup, furniture, ergonomic',
+        handle: 'gaming-desk-setup-pro-rgb',
+        product_url: 'https://techgear-pro.myshopify.com/products/gaming-desk-setup-pro-rgb',
+        image_url: 'https://images.unsplash.com/photo-1593640495253-23196b27a87f?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1593640495253-23196b27a87f?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 12,
+        category: 'Furniture'
+      },
+      {
+        id: 7,
+        shopify_id: '7234567890129',
+        title: 'Professional Camera Kit Bundle',
+        description: 'Complete photography kit with DSLR camera, multiple lenses, tripod, and lighting equipment.',
+        price: 2499.00,
+        compare_price: 2999.00,
+        vendor: 'PhotoPro',
+        product_type: 'Photography',
+        tags: 'camera, photography, dslr, lens, professional, bundle',
+        handle: 'professional-camera-kit-bundle',
+        product_url: 'https://techgear-pro.myshopify.com/products/professional-camera-kit-bundle',
+        image_url: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 6,
+        category: 'Photography'
+      },
+      {
+        id: 8,
+        shopify_id: '7234567890130',
+        title: 'Smart Home Security System',
+        description: 'Complete smart home security with AI-powered cameras, door sensors, and 24/7 monitoring.',
+        price: 599.99,
+        compare_price: 799.99,
+        vendor: 'SecureHome',
+        product_type: 'Security',
+        tags: 'security, smart-home, cameras, monitoring, ai, sensors',
+        handle: 'smart-home-security-system',
+        product_url: 'https://techgear-pro.myshopify.com/products/smart-home-security-system',
+        image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1558002038-bb4237b54bde?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 22,
+        category: 'Security'
+      },
+      {
+        id: 9,
+        shopify_id: '7234567890131',
+        title: 'Luxury Smartwatch Collection',
+        description: 'Premium smartwatch with health monitoring, GPS, and premium materials. Perfect blend of style and technology.',
+        price: 799.00,
+        compare_price: 999.00,
+        vendor: 'LuxeTech',
+        product_type: 'Wearables',
+        tags: 'smartwatch, luxury, health, fitness, gps, premium',
+        handle: 'luxury-smartwatch-collection',
+        product_url: 'https://techgear-pro.myshopify.com/products/luxury-smartwatch-collection',
+        image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 35,
+        category: 'Wearables'
+      },
+      {
+        id: 10,
+        shopify_id: '7234567890132',
+        title: 'Electric Skateboard Pro',
+        description: 'High-performance electric skateboard with 25-mile range, smartphone app control, and regenerative braking.',
+        price: 1299.00,
+        compare_price: 1599.00,
+        vendor: 'RideElectric',
+        product_type: 'Transportation',
+        tags: 'electric, skateboard, transportation, eco-friendly, app-controlled',
+        handle: 'electric-skateboard-pro',
+        product_url: 'https://techgear-pro.myshopify.com/products/electric-skateboard-pro',
+        image_url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1622106492435-220a2b8fec57?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 18,
+        category: 'Transportation'
+      },
+      {
+        id: 11,
+        shopify_id: '7234567890133',
+        title: 'VR Gaming Headset Ultimate',
+        description: 'Next-generation VR headset with 4K per eye resolution, wireless capability, and haptic feedback controllers.',
+        price: 899.99,
+        compare_price: 1199.99,
+        vendor: 'VRTech',
+        product_type: 'Gaming',
+        tags: 'vr, gaming, headset, wireless, 4k, haptic, controllers',
+        handle: 'vr-gaming-headset-ultimate',
+        product_url: 'https://techgear-pro.myshopify.com/products/vr-gaming-headset-ultimate',
+        image_url: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1635186561450-d6bfdf606b58?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 14,
+        category: 'Gaming'
+      },
+      {
+        id: 12,
+        shopify_id: '7234567890134',
+        title: 'Premium Coffee Machine Deluxe',
+        description: 'Professional espresso machine with built-in grinder, milk frother, and smartphone connectivity.',
+        price: 1899.00,
+        compare_price: 2299.00,
+        vendor: 'CoffeeMaster',
+        product_type: 'Kitchen',
+        tags: 'coffee, espresso, machine, grinder, frother, premium, smart',
+        handle: 'premium-coffee-machine-deluxe',
+        product_url: 'https://techgear-pro.myshopify.com/products/premium-coffee-machine-deluxe',
+        image_url: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&h=500&fit=crop',
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&h=500&fit=crop',
+          'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop'
+        ]),
+        status: 'active',
+        inventory_quantity: 9,
+        category: 'Kitchen'
+      }
+    ]
+    
+    // Filter products based on search and category
+    let filteredProducts = fakeProducts
+    if (search) {
+      filteredProducts = fakeProducts.filter(p => 
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        p.description.toLowerCase().includes(search.toLowerCase()) ||
+        p.tags.toLowerCase().includes(search.toLowerCase())
+      )
+    }
+    if (category && category !== 'all') {
+      filteredProducts = filteredProducts.filter(p => p.category.toLowerCase() === category.toLowerCase())
+    }
+    
+    // Paginate results
+    const offset = (page - 1) * limit
+    const paginatedProducts = filteredProducts.slice(offset, offset + limit)
+    
+    return c.json({
+      success: true,
+      products: paginatedProducts,
+      pagination: {
+        page,
+        limit,
+        total: filteredProducts.length,
+        pages: Math.ceil(filteredProducts.length / limit)
+      },
+      categories: ['Electronics', 'Automotive', 'Furniture', 'Photography', 'Security', 'Wearables', 'Transportation', 'Gaming', 'Kitchen']
+    })
+  }
+  
   try {
     // Verify user owns this integration
     const integration = await c.env.DB.prepare(`
@@ -1526,7 +2207,30 @@ app.post('/api/integrations/:integrationId/products/:productId/create-link', aut
   const productId = c.req.param('productId')
   const { campaign_name, custom_title } = await c.req.json()
   
-  try {
+  // Handle fake product link creation for demo mode
+  if (user.api_key === 'api_key_john_123456789') {
+    const shortCode = Math.random().toString(36).substring(2, 8)
+    const fakeLink = {
+      id: Date.now(),
+      title: custom_title || `Product ${productId} Affiliate Link`,
+      campaign_name: campaign_name || 'Demo Campaign',
+      short_code: shortCode,
+      full_link: `https://affiliateboss.com/go/${shortCode}`,
+      clicks: 0,
+      conversions: 0,
+      commission_total: 0,
+      status: 'active',
+      created_at: new Date().toISOString()
+    }
+    
+    return c.json({
+      success: true,
+      message: 'Affiliate link created successfully!',
+      link: fakeLink
+    })
+  }
+  
+  try{
     // Get product and integration details
     const product = await c.env.DB.prepare(`
       SELECT sp.*, si.store_name, si.store_url
@@ -2654,8 +3358,26 @@ app.get('/dashboard', (c) => {
             }
 
             async function loadDashboardStats() {
-                // In demo mode, directly show demo data without API calls
-                if (isDemoMode) {
+                try {
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
+                    }
+                    
+                    const response = await fetch('/api/kpis/dashboard?period=7d', { headers })
+                    
+                    if (response.ok) {
+                        const data = await response.json()
+                        updateDashboardWithRealData(data)
+                        return
+                    }
+                }
+                catch (error) {
+                    console.error('Error loading dashboard stats:', error)
+                }
+                
+                // Fallback to basic demo data
+                if (true) {
                     updateDashboardWithRealData({
                             kpis: {
                                 clicks: 1247,
@@ -2774,8 +3496,26 @@ app.get('/dashboard', (c) => {
             }
 
             async function loadAffiliateLinks() {
-                // In demo mode, directly show demo data without API calls
-                if (isDemoMode) {
+                try {
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
+                    }
+                    
+                    const response = await fetch('/api/links?limit=20', { headers })
+                    
+                    if (response.ok) {
+                        const data = await response.json()
+                        displayAffiliateLinks(data.links || [])
+                        return
+                    }
+                }
+                catch (error) {
+                    console.error('Error loading affiliate links:', error)
+                }
+                
+                // Fallback to demo data
+                if (true) {
                     displayAffiliateLinks([
                             {
                                 id: 1,
@@ -3430,18 +4170,10 @@ app.get('/dashboard', (c) => {
             let productsPerPage = 24
             
             async function loadStoreIntegrations() {
-                // In demo mode, directly show demo data without API calls
-                if (isDemoMode) {
-                    displayStoreIntegrations([])
-                    updateIntegrationStats([])
-                    return
-                }
-                
-                // Real mode - make API calls
                 try {
                     const headers = {
                         'Content-Type': 'application/json',
-                        'X-API-Key': localStorage.getItem('auth_token') || 'demo-key'
+                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
                     }
                     
                     const response = await fetch('/api/integrations', { headers })
@@ -3450,11 +4182,16 @@ app.get('/dashboard', (c) => {
                         const data = await response.json()
                         displayStoreIntegrations(data.integrations || [])
                         updateIntegrationStats(data.integrations || [])
-                    } else {
-                        // Fallback to demo data
-                        displayStoreIntegrations([])
-                        updateIntegrationStats([])
+                        return
                     }
+                }
+                catch (error) {
+                    console.error('Error loading integrations:', error)
+                }
+                
+                // Fallback to empty demo data
+                displayStoreIntegrations([])
+                updateIntegrationStats([])
                 } catch (error) {
                     console.error('Error loading integrations:', error)
                     displayStoreIntegrations([])
