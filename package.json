@@ -9,7 +9,7 @@
     "vercel-build": "vite build"
   },
   "dependencies": {},
-  "devDependencies": {
+  "devDependencies": { 
     "vite": "^5.0.0"
   },
   "engines": {
