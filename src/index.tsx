@@ -133,13 +133,34 @@ const authenticateAPI = async (c: any, next: any) => {
     return c.json({ error: 'API key required' }, 401)
   }
   
-  const user = await c.env.DB.prepare(`
-    SELECT u.*, us.* FROM users u
-    LEFT JOIN user_settings us ON u.id = us.user_id
-    WHERE u.api_key = ? AND u.status = 'approved'
-  `).bind(apiKey).first()
+  // Handle demo mode API key
+  if (apiKey === 'api_key_john_123456789') {
+    // Create mock user for demo mode
+    c.set('user', {
+      id: 1,
+      username: 'demo_user',
+      email: 'demo@example.com',
+      first_name: 'John',
+      last_name: 'Demo',
+      api_key: apiKey,
+      status: 'approved'
+    })
+    await next()
+    return
+  }
   
-  if (!user) {
+  try {
+    const user = await c.env.DB.prepare(`
+      SELECT u.*, us.* FROM users u
+      LEFT JOIN user_settings us ON u.id = us.user_id
+      WHERE u.api_key = ? AND u.status = 'approved'
+    `).bind(apiKey).first()
+    
+    if (!user) {
+      return c.json({ error: 'Invalid API key' }, 401)
+    }
+  } catch (error) {
+    // Database error (tables don't exist) - return 401 for graceful demo fallback
     return c.json({ error: 'Invalid API key' }, 401)
   }
   
@@ -2633,10 +2654,39 @@ app.get('/dashboard', (c) => {
             }
 
             async function loadDashboardStats() {
+                // In demo mode, directly show demo data without API calls
+                if (isDemoMode) {
+                    updateDashboardWithRealData({
+                            kpis: {
+                                clicks: 1247,
+                                unique_clicks: 982,
+                                conversions: 89,
+                                conversion_rate: 9.07,
+                                total_sales: 26262.00,
+                                earnings: 9191.70,
+                                avg_order_value: 295.07,
+                                earnings_per_click: 7.37
+                            },
+                            balances: {
+                                current: 248.60,
+                                pending: 103.95,
+                                lifetime: 1247.85,
+                                tier: 'gold'
+                            },
+                            top_links: [
+                                { title: 'Marketing Course', clicks: 245, conversion_rate: 12.5 },
+                                { title: 'SEO Tools', clicks: 189, conversion_rate: 8.9 },
+                                { title: 'Affiliate Guide', clicks: 167, conversion_rate: 15.2 }
+                            ]
+                        })
+                    return
+                }
+                
+                // Real mode - make API calls
                 try {
                     const headers = {
                         'Content-Type': 'application/json',
-                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
+                        'X-API-Key': localStorage.getItem('auth_token') || 'demo-key'
                     }
                     
                     const response = await fetch('/api/kpis/dashboard?period=7d', { headers })
@@ -2645,7 +2695,7 @@ app.get('/dashboard', (c) => {
                         const data = await response.json()
                         updateDashboardWithRealData(data)
                     } else {
-                        // Fallback to enhanced demo data
+                        // Fallback to demo data for real mode API failures  
                         updateDashboardWithRealData({
                             kpis: {
                                 clicks: 1247,
@@ -2724,10 +2774,38 @@ app.get('/dashboard', (c) => {
             }
 
             async function loadAffiliateLinks() {
+                // In demo mode, directly show demo data without API calls
+                if (isDemoMode) {
+                    displayAffiliateLinks([
+                            {
+                                id: 1,
+                                title: 'Ultimate Marketing Course',
+                                campaign_name: 'Summer Sale Campaign',
+                                full_link: 'https://affiliateboss.com/go/mkt001',
+                                clicks: 150,
+                                conversions: 8,
+                                commission_total: 149.10,
+                                status: 'active'
+                            },
+                            {
+                                id: 2,
+                                title: 'SEO Tools Suite',
+                                campaign_name: 'Q4 Launch',
+                                full_link: 'https://affiliateboss.com/go/seo002',
+                                clicks: 89,
+                                conversions: 12,
+                                commission_total: 284.50,
+                                status: 'active'
+                            }
+                        ])
+                    return
+                }
+                
+                // Real mode - make API calls
                 try {
                     const headers = {
                         'Content-Type': 'application/json',
-                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
+                        'X-API-Key': localStorage.getItem('auth_token') || 'demo-key'
                     }
                     
                     const response = await fetch('/api/links?limit=20', { headers })
@@ -2736,7 +2814,7 @@ app.get('/dashboard', (c) => {
                         const data = await response.json()
                         displayAffiliateLinks(data.links || [])
                     } else {
-                        // Fallback to demo data
+                        // Fallback to demo data for real mode API failures
                         displayAffiliateLinks([
                             {
                                 id: 1,
@@ -3352,10 +3430,18 @@ app.get('/dashboard', (c) => {
             let productsPerPage = 24
             
             async function loadStoreIntegrations() {
+                // In demo mode, directly show demo data without API calls
+                if (isDemoMode) {
+                    displayStoreIntegrations([])
+                    updateIntegrationStats([])
+                    return
+                }
+                
+                // Real mode - make API calls
                 try {
                     const headers = {
                         'Content-Type': 'application/json',
-                        'X-API-Key': isDemoMode ? 'api_key_john_123456789' : (localStorage.getItem('auth_token') || 'demo-key')
+                        'X-API-Key': localStorage.getItem('auth_token') || 'demo-key'
                     }
                     
                     const response = await fetch('/api/integrations', { headers })
