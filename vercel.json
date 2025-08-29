@@ -1,4 +1,10 @@
 {
+  "installCommand": "npm install", 
+  "buildCommand": "npm run vercel-build",
+  "framework": "node",
+  "functions": {
+    "api/**/*.js": {}
+  },
   "rewrites": [
     {
       "source": "/go/(.*)",
