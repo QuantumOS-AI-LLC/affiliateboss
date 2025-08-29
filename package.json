@@ -1,39 +1,36 @@
 {
   "name": "affiliate-boss",
+  "version": "2.0.0",
+  "description": "Web 3.0 Affiliate Marketing Platform - Vercel Edition",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:sandbox": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
-    "dev:d1": "wrangler pages dev dist --d1=affiliate-boss-production --local --ip 0.0.0.0 --port 3000",
-    "build": "vite build",
-    "preview": "wrangler pages dev dist",
-    "deploy": "npm run build && wrangler pages deploy dist",
-    "deploy:prod": "npm run build && wrangler pages deploy dist --project-name affiliate-boss",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "clean-port": "fuser -k 3000/tcp 2>/dev/null || true",
-    "test": "curl http://localhost:3000",
-    "db:migrate:local": "wrangler d1 migrations apply affiliate-boss-production --local",
-    "db:migrate:prod": "wrangler d1 migrations apply affiliate-boss-production",
-    "db:seed": "wrangler d1 execute affiliate-boss-production --local --file=./seed.sql",
-    "db:reset": "rm -rf .wrangler/state/v3/d1 && npm run db:migrate:local && npm run db:seed",
-    "db:console:local": "wrangler d1 execute affiliate-boss-production --local",
-    "db:console:prod": "wrangler d1 execute affiliate-boss-production",
-    "git:init": "git init && git add . && git commit -m 'Initial commit'",
-    "git:commit": "git add . && git commit -m",
-    "git:status": "git status",
-    "git:log": "git log --oneline"
-  },
-  "dependencies": {
-    "hono": "^4.9.4",
-    "stripe": "^18.5.0"
+    "dev": "vercel dev",
+    "build": "echo 'Build completed - no build process needed for Vercel functions'",
+    "start": "vercel dev",
+    "deploy": "vercel --prod",
+    "vercel-build": "echo 'Vercel build step completed'",
+    "test": "echo 'Demo mode: Visit dashboard with API key api_key_john_123456789'"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250705.0",
-    "@hono/vite-build": "^1.2.0",
-    "@hono/vite-cloudflare-pages": "^0.4.2",
-    "@hono/vite-dev-server": "^0.18.2",
-    "typescript": "^5.0.0",
-    "vite": "^6.3.5",
-    "wrangler": "^4.4.0"
-  }
+    "@vercel/node": "^3.0.0",
+    "vercel": "^46.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "affiliate-marketing",
+    "web3",
+    "vercel",
+    "serverless",
+    "shopify",
+    "sms-otp"
+  ],
+  "author": "Affiliate Boss Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/affiliate-boss.git"
+  },
+  "homepage": "https://your-app.vercel.app"
 }
