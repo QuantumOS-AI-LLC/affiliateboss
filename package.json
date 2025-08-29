@@ -4,11 +4,11 @@
   "description": "Affiliate Marketing Platform",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Static build'",
+    "build": "vite build",
     "deploy": "vercel --prod"
   },
   "dependencies": {},
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
