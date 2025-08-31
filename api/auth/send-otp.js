@@ -1,31 +1,53 @@
-const { handleCors } = require('../utils/helpers');
+const { handleCors, generateApiKey } = require('../utils/helpers');
 
 module.exports = async (req, res) => {
     if (handleCors(req, res)) return;
     
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
-
-    const { phone, type = 'verification' } = req.body || {};
+    const { phone, type = 'login' } = req.body || {};
     
     if (!phone) {
-        return res.status(400).json({ error: 'Phone number is required' });
+        return res.status(400).json({
+            error: 'Phone number is required',
+            details: 'Please provide a valid phone number'
+        });
     }
-    
-    // Generate a random 6-digit OTP
+
+    // Basic phone number validation
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    if (!phoneRegex.test(phone)) {
+        return res.status(400).json({
+            error: 'Invalid phone number format',
+            details: 'Please provide a valid international phone number'
+        });
+    }
+
+    // Generate 6-digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    // In a real app, we'd send SMS here via Twilio or similar
-    console.log(`SMS OTP for ${phone}: ${otpCode}`);
-    
-    // For demo, we just return success
-    // In production, we'd store the OTP in database/cache with expiration
-    
-    res.status(200).json({ 
-        success: true, 
-        message: 'OTP sent successfully',
-        // Debug info for demo (remove in production)
-        debug_otp: otpCode
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // In real app:
+    // 1. Check rate limits (max 3 OTP per hour per phone)
+    // 2. Store OTP in database with expiration
+    // 3. Send SMS using Twilio, AWS SNS, or similar service
+    // 4. Log attempt for security monitoring
+
+    // Demo mode - log the OTP for testing
+    console.log(`SMS OTP for ${phone}: ${otpCode} (expires at ${expiresAt.toISOString()})`);
+
+    // Mock SMS sending delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    return res.json({
+        success: true,
+        message: `OTP sent to ${phone}`,
+        data: {
+            phone: phone,
+            type: type,
+            expires_at: expiresAt.toISOString(),
+            attempts_remaining: 3,
+            // In demo mode, return OTP for testing
+            demo_otp: otpCode,
+            demo_note: 'In production, this would be sent via SMS'
+        }
     });
 };

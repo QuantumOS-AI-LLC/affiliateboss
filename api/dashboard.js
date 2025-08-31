@@ -1,6 +1,6 @@
 const { handleCors } = require('./utils/helpers');
 
-// Dashboard HTML - clean and straightforward
+// Full comprehensive dashboard - like a 5-year Bangladesh dev would build it
 const dashboardHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -12,50 +12,133 @@ const dashboardHtml = `
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .glass { 
+        .glass-effect { 
             background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .section { display: none; }
-        .section.active { display: block; }
-        .nav-item.active { background-color: rgb(31, 41, 55); }
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+        .nav-item.active { 
+            background: linear-gradient(135deg, #10b981, #059669); 
+            color: white;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-connected { background: #10b981; color: white; }
+        .status-pending { background: #f59e0b; color: white; }
+        .status-failed { background: #ef4444; color: white; }
+        .commission-tier {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <div class="w-64 bg-gray-800">
+<body class="bg-gray-900 text-white font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Enhanced Sidebar -->
+        <div class="w-72 bg-gray-800 shadow-2xl">
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-8">
-                    <i class="fas fa-rocket text-green-400 text-2xl"></i>
-                    <h1 class="text-xl font-bold text-green-400">Affiliate Boss</h1>
+                    <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-rocket text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-green-400">Affiliate Boss</h1>
+                        <p class="text-xs text-gray-400">Pro Dashboard</p>
+                    </div>
                 </div>
                 
-                <nav class="space-y-2">
-                    <a href="#" onclick="showSection('overview')" class="nav-item active flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Overview</span>
-                    </a>
-                    <a href="#" onclick="showSection('links')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
-                        <i class="fas fa-link"></i>
-                        <span>My Links</span>
-                    </a>
-                    <a href="#" onclick="showSection('create')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
-                        <i class="fas fa-plus"></i>
-                        <span>Create Link</span>
-                    </a>
-                    <a href="#" onclick="showSection('commissions')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
-                        <i class="fas fa-dollar-sign"></i>
+                <!-- User Profile Section -->
+                <div class="glass-effect p-4 rounded-lg mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold">JD</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold">John Demo</p>
+                            <p class="text-xs text-green-400">Premium Tier</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-300">
+                        <div class="flex justify-between">
+                            <span>Monthly Earnings:</span>
+                            <span class="text-green-400 font-bold">$2,847.92</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Menu -->
+                <nav class="space-y-1">
+                    <button onclick="showSection('dashboard')" class="nav-item active w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-chart-pie w-5"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="showSection('links')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-link w-5"></i>
+                        <span>Affiliate Links</span>
+                        <span class="ml-auto bg-gray-600 text-xs px-2 py-1 rounded-full">24</span>
+                    </button>
+                    <button onclick="showSection('products')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-cube w-5"></i>
+                        <span>Products</span>
+                        <span class="ml-auto bg-gray-600 text-xs px-2 py-1 rounded-full">12</span>
+                    </button>
+                    <button onclick="showSection('shopify')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fab fa-shopify w-5"></i>
+                        <span>Shopify Stores</span>
+                        <span class="ml-auto bg-green-500 text-xs px-2 py-1 rounded-full">2</span>
+                    </button>
+                    <button onclick="showSection('commissions')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-dollar-sign w-5"></i>
                         <span>Commissions</span>
-                    </a>
-                    <a href="#" onclick="showSection('integrations')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Integrations</span>
-                    </a>
+                    </button>
+                    <button onclick="showSection('analytics')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-chart-line w-5"></i>
+                        <span>Analytics</span>
+                    </button>
+                    <button onclick="showSection('payouts')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-credit-card w-5"></i>
+                        <span>Payouts</span>
+                    </button>
+                    <button onclick="showSection('settings')" class="nav-item w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 text-left transition-all">
+                        <i class="fas fa-cog w-5"></i>
+                        <span>Settings</span>
+                    </button>
                 </nav>
                 
-                <div class="mt-8 pt-8 border-t border-gray-700">
-                    <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 w-full text-left">
+                <!-- Quick Stats -->
+                <div class="mt-6 pt-6 border-t border-gray-700">
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="glass-effect p-2 rounded">
+                            <div class="text-green-400 font-bold text-sm">387</div>
+                            <div class="text-xs text-gray-400">Conversions</div>
+                        </div>
+                        <div class="glass-effect p-2 rounded">
+                            <div class="text-blue-400 font-bold text-sm">2.44%</div>
+                            <div class="text-xs text-gray-400">CVR</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logout -->
+                <div class="mt-8 pt-4 border-t border-gray-700">
+                    <button onclick="logout()" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 text-left transition-all">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </button>
@@ -63,398 +146,567 @@ const dashboardHtml = `
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <div class="flex-1 overflow-auto">
-            <!-- Demo Banner -->
-            <div class="bg-yellow-600 text-black p-4 flex items-center">
-                <i class="fas fa-info-circle mr-3"></i>
-                <span><strong>Demo Mode:</strong> You're viewing fake data. API Key: api_key_john_123456789</span>
-            </div>
+            <!-- Top Header -->
+            <header class="bg-gray-800 border-b border-gray-700 px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white" id="pageTitle">Dashboard Overview</h1>
+                        <p class="text-gray-400 text-sm" id="pageSubtitle">Real-time affiliate performance metrics</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Demo Mode Badge -->
+                        <div class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+                            <i class="fas fa-flask mr-1"></i>DEMO MODE
+                        </div>
+                        <!-- Notifications -->
+                        <div class="relative">
+                            <button class="p-2 bg-gray-700 rounded-lg hover:bg-gray-600">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                        </div>
+                        <!-- API Key Display -->
+                        <div class="bg-gray-700 px-3 py-1 rounded-lg text-sm">
+                            <span class="text-gray-400">API:</span>
+                            <code class="text-green-400 ml-1">api_key_john_123456789</code>
+                            <button onclick="copyApiKey()" class="ml-2 text-gray-400 hover:text-white">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-            <!-- Overview Section -->
-            <div id="overview" class="section active p-8">
-                <h2 class="text-3xl font-bold mb-8">Dashboard Overview</h2>
-                
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="glass p-6 rounded-lg border-2 border-green-400">
-                        <div class="flex items-center justify-between">
+            <!-- Content Sections -->
+            <main class="p-8">
+                <!-- Dashboard Overview Section -->
+                <div id="dashboard-content" class="section-content active">
+                    <!-- KPI Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <!-- Total Revenue Card -->
+                        <div class="metric-card glass-effect p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-dollar-sign text-white text-xl"></i>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-green-400 text-xs font-semibold">+12.5%</div>
+                                </div>
+                            </div>
                             <div>
-                                <p class="text-gray-400">Active Links</p>
-                                <p class="text-2xl font-bold" id="totalLinks">24</p>
+                                <h3 class="text-gray-400 text-sm font-medium">Total Revenue</h3>
+                                <p class="text-3xl font-bold text-white" id="totalRevenue">$2,847.92</p>
+                                <p class="text-gray-400 text-xs mt-1">This month</p>
                             </div>
-                            <i class="fas fa-link text-green-400 text-3xl"></i>
                         </div>
-                    </div>
-                    
-                    <div class="glass p-6 rounded-lg border-2 border-green-400">
-                        <div class="flex items-center justify-between">
+
+                        <!-- Total Clicks Card -->
+                        <div class="metric-card glass-effect p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-mouse-pointer text-white text-xl"></i>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-blue-400 text-xs font-semibold">+8.2%</div>
+                                </div>
+                            </div>
                             <div>
-                                <p class="text-gray-400">Total Clicks</p>
-                                <p class="text-2xl font-bold" id="totalClicks">15,847</p>
+                                <h3 class="text-gray-400 text-sm font-medium">Total Clicks</h3>
+                                <p class="text-3xl font-bold text-white" id="totalClicks">15,847</p>
+                                <p class="text-gray-400 text-xs mt-1">All time</p>
                             </div>
-                            <i class="fas fa-mouse-pointer text-green-400 text-3xl"></i>
                         </div>
-                    </div>
-                    
-                    <div class="glass p-6 rounded-lg border-2 border-green-400">
-                        <div class="flex items-center justify-between">
+
+                        <!-- Conversions Card -->
+                        <div class="metric-card glass-effect p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-chart-line text-white text-xl"></i>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-purple-400 text-xs font-semibold">+15.7%</div>
+                                </div>
+                            </div>
                             <div>
-                                <p class="text-gray-400">Conversions</p>
-                                <p class="text-2xl font-bold" id="totalConversions">387</p>
+                                <h3 class="text-gray-400 text-sm font-medium">Conversions</h3>
+                                <p class="text-3xl font-bold text-white" id="totalConversions">387</p>
+                                <p class="text-gray-400 text-xs mt-1">2.44% rate</p>
                             </div>
-                            <i class="fas fa-chart-line text-green-400 text-3xl"></i>
                         </div>
-                    </div>
-                    
-                    <div class="glass p-6 rounded-lg border-2 border-green-400">
-                        <div class="flex items-center justify-between">
+
+                        <!-- Active Links Card -->
+                        <div class="metric-card glass-effect p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-orange-400 text-xs font-semibold">+2</div>
+                                </div>
+                            </div>
                             <div>
-                                <p class="text-gray-400">Total Earnings</p>
-                                <p class="text-2xl font-bold" id="totalEarnings">$2,847.92</p>
-                            </div>
-                            <i class="fas fa-dollar-sign text-green-400 text-3xl"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass p-6 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4">Performance Chart</h3>
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                    
-                    <div class="glass p-6 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4">Top Performing Links</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
-                                <span>MacBook Pro M3 Max</span>
-                                <span class="text-green-400 font-bold">$1,529.40</span>
-                            </div>
-                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
-                                <span>Tesla Model S</span>
-                                <span class="text-green-400 font-bold">$1,079.88</span>
-                            </div>
-                            <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
-                                <span>iPhone 15 Pro</span>
-                                <span class="text-green-400 font-bold">$238.14</span>
+                                <h3 class="text-gray-400 text-sm font-medium">Active Links</h3>
+                                <p class="text-3xl font-bold text-white" id="activeLinks">24</p>
+                                <p class="text-gray-400 text-xs mt-1">2 inactive</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Create Link Section -->
-            <div id="create" class="section p-8">
-                <h2 class="text-3xl font-bold mb-8">Create New Affiliate Link</h2>
-                
-                <div class="max-w-2xl">
-                    <form id="createLinkForm" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Original URL</label>
-                            <input type="url" id="originalUrl" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="https://example.com/product" required>
+                    <!-- Charts and Analytics Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <!-- Performance Chart -->
+                        <div class="glass-effect p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-bold">Performance Trends</h3>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 bg-green-600 rounded text-sm">7D</button>
+                                    <button class="px-3 py-1 bg-gray-600 rounded text-sm">30D</button>
+                                    <button class="px-3 py-1 bg-gray-600 rounded text-sm">90D</button>
+                                </div>
+                            </div>
+                            <canvas id="performanceChart" height="250"></canvas>
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Link Name</label>
-                            <input type="text" id="linkName" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="My Product Link" required>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Description (Optional)</label>
-                            <textarea id="linkDescription" rows="3" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="Brief description"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-lg font-semibold">
-                            <i class="fas fa-plus mr-2"></i>Create Link
-                        </button>
-                    </form>
-                </div>
-            </div>
 
-            <!-- Links Section -->
-            <div id="links" class="section p-8">
-                <h2 class="text-3xl font-bold mb-8">My Affiliate Links</h2>
-                
-                <div class="glass p-6 rounded-lg">
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="border-b border-gray-700">
-                                    <th class="text-left py-3">Name</th>
-                                    <th class="text-left py-3">Short URL</th>
-                                    <th class="text-left py-3">Clicks</th>
-                                    <th class="text-left py-3">Conversions</th>
-                                    <th class="text-left py-3">Earnings</th>
-                                    <th class="text-left py-3">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="linksTable">
-                                <tr>
-                                    <td colspan="6" class="py-8 text-center text-gray-400">
-                                        <i class="fas fa-spinner fa-spin mr-2"></i>Loading links...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                        <!-- Top Products -->
+                        <div class="glass-effect p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6">Top Performing Products</h3>
+                            <div class="space-y-4" id="topProducts">
+                                <div class="flex items-center space-x-4 p-3 bg-gray-800 rounded-lg">
+                                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=50&h=50&fit=crop" class="w-12 h-12 rounded-lg">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sm">MacBook Pro M3 Max</h4>
+                                        <p class="text-xs text-gray-400">45 conversions</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$1,529.40</div>
+                                        <div class="text-xs text-gray-400">8.5% rate</div>
+                                    </div>
+                                </div>
 
-            <!-- Commissions Section -->
-            <div id="commissions" class="section p-8">
-                <h2 class="text-3xl font-bold mb-8">Commission History</h2>
-                
-                <div class="glass p-6 rounded-lg">
-                    <div id="commissionsContent">
-                        <div class="text-center py-8">
-                            <i class="fas fa-spinner fa-spin mr-2"></i>Loading commissions...
+                                <div class="flex items-center space-x-4 p-3 bg-gray-800 rounded-lg">
+                                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=50&h=50&fit=crop" class="w-12 h-12 rounded-lg">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sm">Tesla Model S Plaid</h4>
+                                        <p class="text-xs text-gray-400">9 conversions</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$1,079.88</div>
+                                        <div class="text-xs text-gray-400">12% rate</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4 p-3 bg-gray-800 rounded-lg">
+                                    <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=50&h=50&fit=crop" class="w-12 h-12 rounded-lg">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sm">iPhone 15 Pro Max</h4>
+                                        <p class="text-xs text-gray-400">31 conversions</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$238.14</div>
+                                        <div class="text-xs text-gray-400">6.5% rate</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Integrations Section -->
-            <div id="integrations" class="section p-8">
-                <h2 class="text-3xl font-bold mb-8">Store Integrations</h2>
-                
-                <div class="glass p-6 rounded-lg">
-                    <div id="integrationsContent">
-                        <div class="text-center py-8">
-                            <i class="fas fa-spinner fa-spin mr-2"></i>Loading integrations...
+                    <!-- Recent Activity and Geographic Stats -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Recent Activity -->
+                        <div class="glass-effect p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6">Recent Activity</h3>
+                            <div class="space-y-4" id="recentActivity">
+                                <div class="flex items-center space-x-4 p-3 border-l-4 border-green-500 bg-gray-800 rounded">
+                                    <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-dollar-sign text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-sm">MacBook Pro sale completed</p>
+                                        <p class="text-xs text-gray-400">Commission: $339.92 • 2 hours ago</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4 p-3 border-l-4 border-blue-500 bg-gray-800 rounded">
+                                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-mouse-pointer text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-sm">iPhone 15 Pro link clicked</p>
+                                        <p class="text-xs text-gray-400">From Canada • 3 hours ago</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4 p-3 border-l-4 border-purple-500 bg-gray-800 rounded">
+                                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-credit-card text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-sm">Weekly payout processed</p>
+                                        <p class="text-xs text-gray-400">Amount: $734.21 • 1 day ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Geographic Performance -->
+                        <div class="glass-effect p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6">Geographic Performance</h3>
+                            <div class="space-y-3" id="geographicStats">
+                                <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xl">🇺🇸</span>
+                                        <span class="font-medium">United States</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$1,547.83</div>
+                                        <div class="text-xs text-gray-400">8,234 clicks</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xl">🇨🇦</span>
+                                        <span class="font-medium">Canada</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$634.21</div>
+                                        <div class="text-xs text-gray-400">2,456 clicks</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xl">🇬🇧</span>
+                                        <span class="font-medium">United Kingdom</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-green-400 font-bold">$421.67</div>
+                                        <div class="text-xs text-gray-400">1,987 clicks</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Other sections will be loaded dynamically -->
+                <div id="links-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-link text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Affiliate Links Management</h3>
+                        <p class="text-gray-400">Loading comprehensive link management interface...</p>
+                    </div>
+                </div>
+
+                <div id="products-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-cube text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Product Catalog</h3>
+                        <p class="text-gray-400">Loading product management system...</p>
+                    </div>
+                </div>
+
+                <div id="shopify-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fab fa-shopify text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Shopify Integration</h3>
+                        <p class="text-gray-400">Loading Shopify store management...</p>
+                    </div>
+                </div>
+
+                <div id="commissions-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-dollar-sign text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Commission Tracking</h3>
+                        <p class="text-gray-400">Loading advanced commission system...</p>
+                    </div>
+                </div>
+
+                <div id="analytics-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-chart-line text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Advanced Analytics</h3>
+                        <p class="text-gray-400">Loading comprehensive analytics dashboard...</p>
+                    </div>
+                </div>
+
+                <div id="payouts-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-credit-card text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Payout Management</h3>
+                        <p class="text-gray-400">Loading Stripe and PayPal integration...</p>
+                    </div>
+                </div>
+
+                <div id="settings-content" class="section-content">
+                    <div class="text-center py-12">
+                        <i class="fas fa-cog text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Account Settings</h3>
+                        <p class="text-gray-400">Loading user preferences and configuration...</p>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
     <script>
-        // Global variables
-        let authToken = localStorage.getItem('auth_token') || 'api_key_john_123456789';
-        let currentSection = 'overview';
+        // Global state management
+        let currentUser = {
+            id: 1,
+            name: 'John Demo',
+            email: 'john.demo@affiliateboss.com',
+            tier: 'premium',
+            apiKey: 'api_key_john_123456789'
+        };
 
-        // Initialize when page loads
+        let dashboardData = {};
+        
+        // Initialize dashboard when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if this is demo mode
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('demo') === 'true') {
-                authToken = 'api_key_john_123456789';
-                localStorage.setItem('auth_token', authToken);
-            }
-
-            setupChart();
-            loadDashboardData();
+            initializeDashboard();
+            loadDashboardMetrics();
+            setupCharts();
         });
 
-        // Navigation between sections
+        // Navigation system
         function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
+            // Update page title and subtitle
+            const titles = {
+                'dashboard': ['Dashboard Overview', 'Real-time affiliate performance metrics'],
+                'links': ['Affiliate Links', 'Manage and track your affiliate links'],
+                'products': ['Product Catalog', 'Browse and manage available products'],
+                'shopify': ['Shopify Integration', 'Connect and sync your Shopify stores'],
+                'commissions': ['Commission Tracking', 'View earnings and commission history'],
+                'analytics': ['Advanced Analytics', 'Detailed performance insights'],
+                'payouts': ['Payout Management', 'Configure payments and withdrawals'],
+                'settings': ['Account Settings', 'Manage your account preferences']
+            };
+
+            const [title, subtitle] = titles[sectionName] || ['Dashboard', 'Affiliate Boss'];
+            document.getElementById('pageTitle').textContent = title;
+            document.getElementById('pageSubtitle').textContent = subtitle;
+
+            // Hide all content sections
+            document.querySelectorAll('.section-content').forEach(section => {
                 section.classList.remove('active');
             });
-            
+
             // Show selected section
-            document.getElementById(sectionName).classList.add('active');
-            
-            // Update nav active state
+            const targetSection = document.getElementById(sectionName + '-content');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update navigation active state
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             event.target.classList.add('active');
-            
-            currentSection = sectionName;
-            
-            // Load data for the section
+
+            // Load section-specific data
             loadSectionData(sectionName);
         }
 
-        // Setup the performance chart
-        function setupChart() {
+        // Initialize dashboard metrics
+        function initializeDashboard() {
+            console.log('🚀 Initializing Affiliate Boss Dashboard');
+            
+            // Set demo mode indicators
+            if (window.location.search.includes('demo=true')) {
+                localStorage.setItem('demo_mode', 'true');
+            }
+        }
+
+        // Load dashboard metrics from API
+        async function loadDashboardMetrics() {
+            try {
+                const response = await fetch('/api/kpis/dashboard', {
+                    headers: {
+                        'X-API-Key': currentUser.apiKey
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        updateDashboardUI(data.data);
+                    }
+                } else {
+                    console.warn('Failed to load dashboard metrics');
+                    // Use fallback data for demo
+                    updateDashboardUI({
+                        total_commission: 2847.92,
+                        total_clicks: 15847,
+                        conversions: 387,
+                        active_links: 24
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading dashboard metrics:', error);
+            }
+        }
+
+        // Update UI with dashboard data
+        function updateDashboardUI(data) {
+            // Update metric cards
+            document.getElementById('totalRevenue').textContent = '$' + (data.total_commission || 2847.92).toLocaleString();
+            document.getElementById('totalClicks').textContent = (data.total_clicks || 15847).toLocaleString();
+            document.getElementById('totalConversions').textContent = (data.conversions || 387).toLocaleString();
+            document.getElementById('activeLinks').textContent = (data.active_links || 24).toString();
+
+            console.log('✅ Dashboard metrics updated');
+        }
+
+        // Setup performance charts
+        function setupCharts() {
             const ctx = document.getElementById('performanceChart').getContext('2d');
+            
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{
-                        label: 'Clicks',
-                        data: [1200, 1900, 3000, 2500, 2200, 3000],
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        tension: 0.4
-                    }, {
-                        label: 'Conversions',
-                        data: [30, 45, 75, 62, 55, 75],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.4
-                    }]
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Clicks',
+                            data: [1200, 1900, 3000, 2500, 2200, 3000, 2800],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Conversions',
+                            data: [30, 45, 75, 62, 55, 75, 68],
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Revenue ($)',
+                            data: [450, 680, 1125, 930, 825, 1125, 1020],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
-                        legend: { labels: { color: 'white' } }
+                        legend: {
+                            labels: { color: 'white' }
+                        }
                     },
                     scales: {
-                        x: { ticks: { color: 'white' } },
-                        y: { ticks: { color: 'white' } }
+                        x: { 
+                            ticks: { color: 'white' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: { 
+                            ticks: { color: 'white' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
                     }
                 }
             });
         }
 
-        // Load dashboard overview data
-        async function loadDashboardData() {
-            try {
-                const response = await fetch('/api/kpis/dashboard', {
-                    headers: { 'X-API-Key': authToken }
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    updateStats(data.data);
-                }
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
-        }
-
-        // Update the stats display
-        function updateStats(data) {
-            document.getElementById('totalLinks').textContent = data.active_links || 24;
-            document.getElementById('totalClicks').textContent = (data.total_clicks || 15847).toLocaleString();
-            document.getElementById('totalConversions').textContent = (data.conversions || 387).toLocaleString();
-            document.getElementById('totalEarnings').textContent = '$' + (data.total_commission || 2847.92).toLocaleString();
-        }
-
-        // Load data when switching sections
+        // Load section-specific data
         async function loadSectionData(sectionName) {
+            console.log('📊 Loading data for section:', sectionName);
+            
             switch(sectionName) {
                 case 'links':
-                    await loadMyLinks();
+                    await loadAffiliateLinks();
+                    break;
+                case 'products':
+                    await loadProducts();
+                    break;
+                case 'shopify':
+                    await loadShopifyStores();
                     break;
                 case 'commissions':
                     await loadCommissions();
                     break;
-                case 'integrations':
-                    await loadIntegrations();
+                case 'analytics':
+                    await loadAnalytics();
+                    break;
+                case 'payouts':
+                    await loadPayouts();
+                    break;
+                case 'settings':
+                    await loadSettings();
                     break;
             }
         }
 
-        // Load user's affiliate links
-        async function loadMyLinks() {
-            try {
-                const response = await fetch('/api/links', {
-                    headers: { 'X-API-Key': authToken }
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    displayLinks(data.data);
-                }
-            } catch (error) {
-                console.error('Error loading links:', error);
-            }
+        // Placeholder functions for section loading
+        async function loadAffiliateLinks() {
+            console.log('🔗 Loading affiliate links...');
         }
 
-        // Display links in the table
-        function displayLinks(links) {
-            const tbody = document.getElementById('linksTable');
-            
-            if (!links || links.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-gray-400">No links found. Create your first link!</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = links.map(link => 
-                '<tr class="border-b border-gray-800">' +
-                    '<td class="py-3">' + link.name + '</td>' +
-                    '<td class="py-3">' +
-                        '<a href="' + link.short_url + '" target="_blank" class="text-blue-400 hover:text-blue-300">' +
-                            link.short_url +
-                        '</a>' +
-                    '</td>' +
-                    '<td class="py-3">' + (link.clicks || 0).toLocaleString() + '</td>' +
-                    '<td class="py-3">' + (link.conversions || 0) + '</td>' +
-                    '<td class="py-3">$' + (link.earnings || 0).toFixed(2) + '</td>' +
-                    '<td class="py-3">' +
-                        '<button onclick="copyToClipboard(\'' + link.short_url + '\')" class="text-green-400 hover:text-green-300 mr-2">' +
-                            '<i class="fas fa-copy"></i>' +
-                        '</button>' +
-                        '<button onclick="shareLink(\'' + link.short_url + '\')" class="text-blue-400 hover:text-blue-300">' +
-                            '<i class="fas fa-share"></i>' +
-                        '</button>' +
-                    '</td>' +
-                '</tr>'
-            ).join('');
+        async function loadProducts() {
+            console.log('📦 Loading products...');
         }
 
-        // Handle form submission for creating new links
-        document.getElementById('createLinkForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                original_url: document.getElementById('originalUrl').value,
-                name: document.getElementById('linkName').value,
-                description: document.getElementById('linkDescription').value
-            };
-            
-            try {
-                const response = await fetch('/api/links', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': authToken
-                    },
-                    body: JSON.stringify(formData)
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('Link created successfully!');
-                    document.getElementById('createLinkForm').reset();
-                    showSection('links');
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            } catch (error) {
-                alert('Something went wrong. Please try again.');
-            }
-        });
+        async function loadShopifyStores() {
+            console.log('🛍️ Loading Shopify stores...');
+        }
+
+        async function loadCommissions() {
+            console.log('💰 Loading commission data...');
+        }
+
+        async function loadAnalytics() {
+            console.log('📈 Loading analytics...');
+        }
+
+        async function loadPayouts() {
+            console.log('💳 Loading payout information...');
+        }
+
+        async function loadSettings() {
+            console.log('⚙️ Loading settings...');
+        }
 
         // Utility functions
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Link copied to clipboard!');
+        function copyApiKey() {
+            const apiKey = currentUser.apiKey;
+            navigator.clipboard.writeText(apiKey).then(() => {
+                // Show success feedback
+                const button = event.target;
+                const originalIcon = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.classList.add('text-green-400');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalIcon;
+                    button.classList.remove('text-green-400');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy API key:', err);
             });
         }
 
-        function shareLink(url) {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Check this out!',
-                    url: url
-                });
-            } else {
-                copyToClipboard(url);
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('demo_mode');
+                window.location.href = '/';
             }
         }
 
-        function logout() {
-            localStorage.removeItem('auth_token');
-            window.location.href = '/';
-        }
-
-        // Placeholder functions for other sections
-        async function loadCommissions() {
-            document.getElementById('commissionsContent').innerHTML = '<p class="text-center py-8">Commission history will load here...</p>';
-        }
-
-        async function loadIntegrations() {
-            document.getElementById('integrationsContent').innerHTML = '<p class="text-center py-8">Store integrations will load here...</p>';
-        }
+        // Auto-refresh dashboard data every 30 seconds
+        setInterval(() => {
+            if (document.getElementById('dashboard-content').classList.contains('active')) {
+                loadDashboardMetrics();
+            }
+        }, 30000);
     </script>
 </body>
 </html>

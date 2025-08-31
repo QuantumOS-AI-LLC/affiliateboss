@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Boss - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .neon-glow { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        .section { display: none; }
+        .section.active { display: block; }
+        .nav-item.active { background-color: rgb(31, 41, 55); }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Landing Page -->
+    <div id="landingPage">
+        <nav class="bg-gray-800 border-b-2 border-green-400 p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-rocket text-green-400 text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-green-400">Affiliate Boss</h1>
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="showDemo()" class="bg-green-400 hover:bg-green-500 text-black px-6 py-2 rounded-lg">
+                        <i class="fas fa-play mr-2"></i>Try Demo
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="gradient-bg py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-5xl font-bold mb-6">Affiliate Boss Demo</h1>
+                <p class="text-xl mb-8 opacity-90">Test the complete affiliate marketing platform with realistic demo data.</p>
+                
+                <div class="flex justify-center space-x-6 mb-8">
+                    <button onclick="showDemo()" class="bg-green-400 hover:bg-green-500 text-black px-8 py-4 rounded-lg text-lg font-semibold neon-glow">
+                        <i class="fas fa-play mr-2"></i>Launch Dashboard Demo
+                    </button>
+                </div>
+                
+                <div class="bg-yellow-600 text-black p-4 rounded-lg inline-block">
+                    <strong>🔑 Demo API Key:</strong> <code class="bg-black text-yellow-400 px-2 py-1 rounded">api_key_john_123456789</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-20 bg-gray-800">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center mb-16">Demo Features</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-lg border-2 border-green-400 bg-gray-900">
+                        <i class="fas fa-link text-green-400 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Affiliate Links</h3>
+                        <p>Create and manage affiliate links with 5+ demo products including MacBook Pro, Tesla Model S, iPhone 15 Pro.</p>
+                    </div>
+                    <div class="p-8 rounded-lg border-2 border-green-400 bg-gray-900">
+                        <i class="fas fa-chart-line text-green-400 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Analytics Dashboard</h3>
+                        <p>Interactive charts showing 15,847 clicks, 387 conversions, $2,847.92 in earnings with realistic performance data.</p>
+                    </div>
+                    <div class="p-8 rounded-lg border-2 border-green-400 bg-gray-900">
+                        <i class="fas fa-shopping-cart text-green-400 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Store Integrations</h3>
+                        <p>Connect with 2 demo Shopify stores: TechHub Premium and Luxury Lifestyle Store with full product sync.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Demo -->
+    <div id="dashboardDemo" class="hidden h-screen">
+        <div class="flex h-full">
+            <!-- Sidebar -->
+            <div class="w-64 bg-gray-800">
+                <div class="p-6">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <i class="fas fa-rocket text-green-400 text-2xl"></i>
+                        <h1 class="text-xl font-bold text-green-400">Affiliate Boss</h1>
+                    </div>
+                    
+                    <nav class="space-y-2">
+                        <a href="#" onclick="showSection('overview')" class="nav-item active flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Overview</span>
+                        </a>
+                        <a href="#" onclick="showSection('links')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
+                            <i class="fas fa-link"></i>
+                            <span>My Links</span>
+                        </a>
+                        <a href="#" onclick="showSection('create')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
+                            <i class="fas fa-plus"></i>
+                            <span>Create Link</span>
+                        </a>
+                        <a href="#" onclick="showSection('integrations')" class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 block">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Integrations</span>
+                        </a>
+                    </nav>
+                    
+                    <div class="mt-8 pt-8 border-t border-gray-700">
+                        <button onclick="showLanding()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 w-full text-left">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back to Home</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 overflow-auto">
+                <!-- Demo Banner -->
+                <div class="bg-yellow-600 text-black p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle mr-3"></i>
+                        <span><strong>Demo Mode:</strong> Viewing realistic fake data - API Key: api_key_john_123456789</span>
+                    </div>
+                    <button onclick="copyApiKey()" class="bg-black text-yellow-400 px-3 py-1 rounded text-sm hover:bg-gray-800">
+                        <i class="fas fa-copy mr-1"></i>Copy API Key
+                    </button>
+                </div>
+
+                <!-- Overview Section -->
+                <div id="overview" class="section active p-8">
+                    <h2 class="text-3xl font-bold mb-8">Dashboard Overview</h2>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="glass p-6 rounded-lg border-2 border-green-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400">Active Links</p>
+                                    <p class="text-2xl font-bold">24</p>
+                                </div>
+                                <i class="fas fa-link text-green-400 text-3xl"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-lg border-2 border-green-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400">Total Clicks</p>
+                                    <p class="text-2xl font-bold">15,847</p>
+                                </div>
+                                <i class="fas fa-mouse-pointer text-green-400 text-3xl"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-lg border-2 border-green-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400">Conversions</p>
+                                    <p class="text-2xl font-bold">387</p>
+                                </div>
+                                <i class="fas fa-chart-line text-green-400 text-3xl"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-lg border-2 border-green-400">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400">Total Earnings</p>
+                                    <p class="text-2xl font-bold">$2,847.92</p>
+                                </div>
+                                <i class="fas fa-dollar-sign text-green-400 text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="glass p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Performance Chart</h3>
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Top Performing Links</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                    <span>MacBook Pro M3 Max</span>
+                                    <span class="text-green-400 font-bold">$1,529.40</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                    <span>Tesla Model S Plaid</span>
+                                    <span class="text-green-400 font-bold">$1,079.88</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-800 rounded">
+                                    <span>iPhone 15 Pro Max</span>
+                                    <span class="text-green-400 font-bold">$238.14</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Link Section -->
+                <div id="create" class="section p-8">
+                    <h2 class="text-3xl font-bold mb-8">Create New Affiliate Link</h2>
+                    
+                    <div class="max-w-2xl">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Original URL</label>
+                                <input type="url" id="originalUrl" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="https://example.com/product" value="">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Link Name</label>
+                                <input type="text" id="linkName" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="My Product Link" value="">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Description (Optional)</label>
+                                <textarea id="linkDescription" rows="3" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:border-green-400 focus:outline-none" placeholder="Brief description"></textarea>
+                            </div>
+                            
+                            <button onclick="createDemoLink()" class="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-lg font-semibold">
+                                <i class="fas fa-plus mr-2"></i>Create Demo Link
+                            </button>
+                        </div>
+                        
+                        <div id="createdLink" class="hidden mt-6 p-4 bg-gray-800 rounded-lg">
+                            <h4 class="text-green-400 font-bold mb-2">✅ Demo Link Created Successfully!</h4>
+                            <p><strong>Short URL:</strong> <span id="generatedUrl" class="text-blue-400"></span></p>
+                            <button onclick="copyLink()" class="mt-2 bg-blue-600 px-4 py-2 rounded text-sm">
+                                <i class="fas fa-copy mr-1"></i>Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Links Section -->
+                <div id="links" class="section p-8">
+                    <h2 class="text-3xl font-bold mb-8">My Demo Affiliate Links</h2>
+                    
+                    <div class="glass p-6 rounded-lg">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-700">
+                                        <th class="text-left py-3">Name</th>
+                                        <th class="text-left py-3">Short URL</th>
+                                        <th class="text-left py-3">Clicks</th>
+                                        <th class="text-left py-3">Conversions</th>
+                                        <th class="text-left py-3">Earnings</th>
+                                        <th class="text-left py-3">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-800">
+                                        <td class="py-3">MacBook Pro M3 Max Link</td>
+                                        <td class="py-3">
+                                            <a href="#" onclick="alert('Demo redirect to Apple.com')" class="text-blue-400 hover:text-blue-300">
+                                                demo.com/go/mbp001
+                                            </a>
+                                        </td>
+                                        <td class="py-3">2,847</td>
+                                        <td class="py-3">45</td>
+                                        <td class="py-3">$1,529.40</td>
+                                        <td class="py-3">
+                                            <button onclick="alert('Demo: Link copied!')" class="text-green-400 hover:text-green-300 mr-2">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button onclick="alert('Demo: Share link')" class="text-blue-400 hover:text-blue-300">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-800">
+                                        <td class="py-3">Tesla Model S Plaid</td>
+                                        <td class="py-3">
+                                            <a href="#" onclick="alert('Demo redirect to Tesla.com')" class="text-blue-400 hover:text-blue-300">
+                                                demo.com/go/tesla02
+                                            </a>
+                                        </td>
+                                        <td class="py-3">1,056</td>
+                                        <td class="py-3">9</td>
+                                        <td class="py-3">$1,079.88</td>
+                                        <td class="py-3">
+                                            <button onclick="alert('Demo: Link copied!')" class="text-green-400 hover:text-green-300 mr-2">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button onclick="alert('Demo: Share link')" class="text-blue-400 hover:text-blue-300">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-800">
+                                        <td class="py-3">iPhone 15 Pro Max Deal</td>
+                                        <td class="py-3">
+                                            <a href="#" onclick="alert('Demo redirect to Apple.com/iPhone')" class="text-blue-400 hover:text-blue-300">
+                                                demo.com/go/ip15pm
+                                            </a>
+                                        </td>
+                                        <td class="py-3">892</td>
+                                        <td class="py-3">31</td>
+                                        <td class="py-3">$238.14</td>
+                                        <td class="py-3">
+                                            <button onclick="alert('Demo: Link copied!')" class="text-green-400 hover:text-green-300 mr-2">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button onclick="alert('Demo: Share link')" class="text-blue-400 hover:text-blue-300">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integrations Section -->
+                <div id="integrations" class="section p-8">
+                    <h2 class="text-3xl font-bold mb-8">Store Integrations</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="glass p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Connected Stores</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center p-4 bg-gray-800 rounded">
+                                    <div>
+                                        <h4 class="font-bold">TechHub Premium</h4>
+                                        <p class="text-sm text-gray-400">techhub-premium.myshopify.com</p>
+                                        <p class="text-sm text-green-400">8 products synced</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-green-600 px-2 py-1 rounded text-sm">Connected</span>
+                                        <p class="text-xs text-gray-400 mt-1">Last sync: 2 hours ago</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center p-4 bg-gray-800 rounded">
+                                    <div>
+                                        <h4 class="font-bold">Luxury Lifestyle Store</h4>
+                                        <p class="text-sm text-gray-400">luxury-lifestyle.myshopify.com</p>
+                                        <p class="text-sm text-green-400">4 products synced</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-green-600 px-2 py-1 rounded text-sm">Connected</span>
+                                        <p class="text-xs text-gray-400 mt-1">Last sync: 1 hour ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Demo Products</h3>
+                            <div class="space-y-3 max-h-64 overflow-y-auto">
+                                <div class="flex items-center space-x-3 p-3 bg-gray-800 rounded">
+                                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=50&h=50&fit=crop" class="w-12 h-12 rounded">
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-sm">MacBook Pro M3 Max</h5>
+                                        <p class="text-xs text-gray-400">$3,999.00 • 8.5% commission</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3 p-3 bg-gray-800 rounded">
+                                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=50&h=50&fit=crop" class="w-12 h-12 rounded">
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-sm">Tesla Model S Plaid</h5>
+                                        <p class="text-xs text-gray-400">$89,990.00 • 12% commission</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3 p-3 bg-gray-800 rounded">
+                                    <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=50&h=50&fit=crop" class="w-12 h-12 rounded">
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-sm">iPhone 15 Pro Max</h5>
+                                        <p class="text-xs text-gray-400">$1,199.00 • 6.5% commission</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3 p-3 bg-gray-800 rounded">
+                                    <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=50&h=50&fit=crop" class="w-12 h-12 rounded">
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-sm">Sony WH-1000XM5</h5>
+                                        <p class="text-xs text-gray-400">$399.99 • 15% commission</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3 p-3 bg-gray-800 rounded">
+                                    <img src="https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=50&h=50&fit=crop" class="w-12 h-12 rounded">
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-sm">Canon EOS R5 Camera</h5>
+                                        <p class="text-xs text-gray-400">$3,899.00 • 10.5% commission</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functions
+        function showDemo() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('dashboardDemo').classList.remove('hidden');
+            setupChart();
+        }
+
+        function showLanding() {
+            document.getElementById('landingPage').style.display = 'block';
+            document.getElementById('dashboardDemo').classList.add('hidden');
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Setup performance chart
+        function setupChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Clicks',
+                        data: [1200, 1900, 3000, 2500, 2200, 3000],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Conversions',
+                        data: [30, 45, 75, 62, 55, 75],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: 'white' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'white' } },
+                        y: { ticks: { color: 'white' } }
+                    }
+                }
+            });
+        }
+
+        // Demo functions
+        function copyApiKey() {
+            navigator.clipboard.writeText('api_key_john_123456789').then(() => {
+                alert('✅ Demo API Key copied to clipboard!');
+            });
+        }
+
+        function createDemoLink() {
+            const url = document.getElementById('originalUrl').value || 'https://example.com';
+            const name = document.getElementById('linkName').value || 'Demo Product';
+            
+            const shortCode = Math.random().toString(36).substring(2, 8);
+            const shortUrl = `demo.com/go/${shortCode}`;
+            
+            document.getElementById('generatedUrl').textContent = shortUrl;
+            document.getElementById('createdLink').classList.remove('hidden');
+            
+            // Clear form
+            document.getElementById('originalUrl').value = '';
+            document.getElementById('linkName').value = '';
+            document.getElementById('linkDescription').value = '';
+        }
+
+        function copyLink() {
+            const url = document.getElementById('generatedUrl').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ Demo link copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

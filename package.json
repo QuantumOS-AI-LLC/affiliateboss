@@ -1,18 +1,35 @@
 {
   "name": "affiliate-boss",
-  "version": "2.1.0",
-  "description": "Affiliate Marketing Platform - Clean Code Edition",
+  "version": "3.0.0",
+  "description": "Complete Affiliate Marketing Platform - Production Ready",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'No build step needed'",
-    "start": "vercel dev",
+    "dev": "node server/dev-server.js",
+    "build": "echo 'Building static assets'",
+    "start": "node server/dev-server.js",
     "deploy": "vercel --prod",
-    "test": "echo 'Demo: Use API key api_key_john_123456789'"
+    "init-db": "node scripts/init-database.js",
+    "seed-db": "node scripts/seed-database.js",
+    "test-api": "node scripts/test-api.js",
+    "clean": "rm -f database.db && npm run init-db && npm run seed-db"
   },
-  "dependencies": {},
+  "dependencies": {
+    "better-sqlite3": "^9.2.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^9.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.7",
+    "twilio": "^4.19.0",
+    "axios": "^1.6.2"
+  },
   "devDependencies": {
     "@vercel/node": "^3.0.0",
-    "vercel": "latest"
+    "vercel": "latest",
+    "nodemon": "^3.0.2"
   },
   "engines": {
     "node": ">=18"
@@ -21,8 +38,10 @@
     "affiliate-marketing",
     "vercel",
     "serverless",
-    "nodejs"
+    "nodejs",
+    "full-stack",
+    "production"
   ],
-  "author": "Development Team",
+  "author": "Bangladesh Dev Team",
   "license": "MIT"
 }

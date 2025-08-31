@@ -3,265 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affiliate Boss - Web 3.0 Affiliate Marketing Platform</title>
+    <title>Affiliate Boss - Complete Affiliate Marketing Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'neon': '#00ff88',
-              'cyber': '#0066ff',
-              'dark': '#0a0a0a',
-            }
-          }
-        }
-      }
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <style>
-      .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-      .neon-shadow { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-      .cyber-border { border: 2px solid #00ff88; }
-      .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-    <!-- Header -->
-    <nav class="bg-gray-800 border-b border-neon">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-4">
-                    <i class="fas fa-rocket text-neon text-2xl"></i>
-                    <h1 class="text-2xl font-bold text-neon">Affiliate Boss</h1>
+                    <div class="text-white">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold">Affiliate Boss</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6 ml-8">
+                        <a href="#dashboard" onclick="showSection('dashboard')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                        </a>
+                        <a href="#links" onclick="showSection('links')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-link mr-1"></i> Links
+                        </a>
+                        <a href="#products" onclick="showSection('products')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-shopping-bag mr-1"></i> Products
+                        </a>
+                        <a href="#shopify" onclick="showSection('shopify')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fab fa-shopify mr-1"></i> Shopify
+                        </a>
+                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-dollar-sign mr-1"></i> Commissions
+                        </a>
+                        <a href="#analytics" onclick="showSection('analytics')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-chart-bar mr-1"></i> Analytics
+                        </a>
+                    </div>
                 </div>
-                <div class="flex space-x-4">
-                    <button onclick="showLogin()" class="bg-cyber hover:bg-blue-700 px-6 py-2 rounded-lg transition-all duration-300">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Login
-                    </button>
-                    <button onclick="showSignup()" class="bg-neon hover:bg-green-400 text-black px-6 py-2 rounded-lg transition-all duration-300">
-                        <i class="fas fa-user-plus mr-2"></i>Sign Up
+                <div class="flex items-center space-x-4">
+                    <div class="text-white text-sm">
+                        <i class="fas fa-user-circle mr-1"></i>
+                        <span id="user-name">John Doe</span>
+                        <span class="ml-2 bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold" id="user-tier">GOLD</span>
+                    </div>
+                    <button onclick="showNotifications()" class="text-white hover:text-blue-200 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="notification-count">3</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <div class="gradient-bg py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bold mb-6">The Future of Affiliate Marketing</h1>
-            <p class="text-xl mb-8 opacity-90">Simple. Powerful. Web 3.0. Generate affiliate links, track performance, and earn commissions like never before.</p>
-            <div class="flex justify-center space-x-6">
-                <button onclick="showDemo()" class="bg-neon hover:bg-green-400 text-black px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 neon-shadow">
-                    <i class="fas fa-play mr-2"></i>Try Demo
-                </button>
-                <button onclick="scrollToFeatures()" class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300">
-                    <i class="fas fa-info-circle mr-2"></i>Learn More
-                </button>
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section fade-in">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
+                <p class="text-gray-600">Welcome back! Here's your affiliate performance summary.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Earnings</p>
+                            <p class="text-2xl font-bold text-green-600" id="total-earnings">$12,847.50</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-dollar-sign text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-green-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +12.5% from last month
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Active Links</p>
+                            <p class="text-2xl font-bold text-blue-600" id="active-links">47</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-link text-blue-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-blue-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +3 new this week
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Clicks</p>
+                            <p class="text-2xl font-bold text-purple-600" id="total-clicks">89,432</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-mouse-pointer text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-purple-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +8.3% this month
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Conversion Rate</p>
+                            <p class="text-2xl font-bold text-orange-600" id="conversion-rate">4.2%</p>
+                        </div>
+                        <div class="bg-orange-100 p-3 rounded-full">
+                            <i class="fas fa-chart-line text-orange-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-orange-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +0.3% improvement
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Earnings Trend (30 Days)</h3>
+                    <canvas id="earningsChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Top Performing Products</h3>
+                    <canvas id="productsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Recent Commissions</h3>
+                    <div class="space-y-3" id="recent-commissions">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <button onclick="showSection('commissions')" class="mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        View All Commissions →
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Top Affiliate Links</h3>
+                    <div class="space-y-3" id="top-links">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <button onclick="showSection('links')" class="mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        View All Links →
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Features Section -->
-    <div id="features" class="py-20 bg-gray-800">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-16">Powerful Features</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-link text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">Instant Link Generation</h3>
-                    <p>Create affiliate links from any URL in seconds. Simple, fast, and powerful.</p>
-                </div>
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-sms text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">SMS Sharing</h3>
-                    <p>Share your affiliate links via SMS with one click. Perfect for mobile marketing.</p>
-                </div>
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-chart-line text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">Real-time Analytics</h3>
-                    <p>Track clicks, conversions, and earnings in real-time with detailed reports.</p>
-                </div>
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-shield-alt text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">SMS OTP Security</h3>
-                    <p>Secure login and verification with SMS OTP. No complex passwords needed.</p>
-                </div>
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-dollar-sign text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">Commission Tracking</h3>
-                    <p>Automated commission calculation and payout management system.</p>
-                </div>
-                <div class="glass p-8 rounded-lg cyber-border">
-                    <i class="fas fa-mobile-alt text-neon text-4xl mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">Mobile-First Design</h3>
-                    <p>Optimized for mobile use. Manage your affiliate business on the go.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-gray-800 p-8 rounded-lg max-w-md w-full mx-4">
+        <!-- Links Section -->
+        <div id="links-section" class="section hidden">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-neon">Login to Affiliate Boss</h2>
-                <button onclick="hideModals()" class="text-gray-400 hover:text-white">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Links</h1>
+                    <p class="text-gray-600">Manage and track your affiliate marketing links</p>
+                </div>
+                <button onclick="showCreateLinkModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Create Link
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white p-4 rounded-lg card-shadow mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input type="text" placeholder="Search links..." class="border border-gray-300 rounded-lg px-3 py-2" id="link-search">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2" id="link-status-filter">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="paused">Paused</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2" id="link-category-filter">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home & Garden</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                    <button onclick="filterLinks()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-filter mr-2"></i>Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Links Table -->
+            <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Clicks</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conversions</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earnings</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="links-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div id="products-section" class="section hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Product Catalog</h1>
+                    <p class="text-gray-600">Browse and create affiliate links for available products</p>
+                </div>
+                <button onclick="syncShopifyProducts()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fab fa-shopify mr-2"></i>Sync Shopify
+                </button>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Shopify Section -->
+        <div id="shopify-section" class="section hidden">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Shopify Integration</h1>
+                <p class="text-gray-600">Connect and manage your Shopify stores</p>
+            </div>
+
+            <!-- Connection Status -->
+            <div class="bg-white p-6 rounded-lg card-shadow mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fab fa-shopify text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Demo Fashion Store</h3>
+                            <p class="text-gray-600">demo-fashion.myshopify.com</p>
+                            <div class="flex items-center mt-1">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <span class="text-green-600 text-sm font-medium">Connected & Syncing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold text-gray-800">247</p>
+                        <p class="text-sm text-gray-600">Products Synced</p>
+                        <p class="text-xs text-gray-500">Last sync: 5 min ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="font-semibold text-gray-800 mb-2">Orders Today</h4>
+                    <p class="text-2xl font-bold text-blue-600">23</p>
+                    <p class="text-sm text-gray-600">$1,847.30 revenue</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="font-semibold text-gray-800 mb-2">Commission Earned</h4>
+                    <p class="text-2xl font-bold text-green-600">$184.73</p>
+                    <p class="text-sm text-gray-600">10% average rate</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h4 class="font-semibold text-gray-800 mb-2">Pending Payouts</h4>
+                    <p class="text-2xl font-bold text-orange-600">$523.45</p>
+                    <p class="text-sm text-gray-600">Next payout: Friday</p>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-lg font-semibold mb-4">Recent Shopify Orders</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shopify-orders-table" class="divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commissions Section -->
+        <div id="commissions-section" class="section hidden">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Commission Tracking</h1>
+                <p class="text-gray-600">Track your earnings and commission history</p>
+            </div>
+
+            <!-- Commission Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">This Month</h4>
+                    <p class="text-3xl font-bold">$2,847.50</p>
+                    <p class="text-green-100">+23% vs last month</p>
+                </div>
+                <div class="bg-gradient-to-r from-blue-400 to-blue-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Pending</h4>
+                    <p class="text-3xl font-bold">$523.45</p>
+                    <p class="text-blue-100">12 transactions</p>
+                </div>
+                <div class="bg-gradient-to-r from-purple-400 to-purple-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Paid Out</h4>
+                    <p class="text-3xl font-bold">$9,476.55</p>
+                    <p class="text-purple-100">Last payout: 3 days ago</p>
+                </div>
+                <div class="bg-gradient-to-r from-orange-400 to-orange-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Current Tier</h4>
+                    <p class="text-3xl font-bold">GOLD</p>
+                    <p class="text-orange-100">15% base rate</p>
+                </div>
+            </div>
+
+            <!-- Commission History -->
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-lg font-semibold mb-4">Commission History</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sale Amount</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rate</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commissions-table-body" class="divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics-section" class="section hidden">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Performance Analytics</h1>
+                <p class="text-gray-600">Deep dive into your affiliate marketing performance</p>
+            </div>
+
+            <!-- Time Range Selector -->
+            <div class="bg-white p-4 rounded-lg card-shadow mb-6">
+                <div class="flex items-center space-x-4">
+                    <label class="text-sm font-medium text-gray-700">Time Range:</label>
+                    <select id="analytics-timeframe" class="border border-gray-300 rounded px-3 py-2">
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="365">Last year</option>
+                    </select>
+                    <button onclick="updateAnalytics()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Traffic Sources</h3>
+                    <canvas id="trafficChart" width="400" height="300"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Geographic Performance</h3>
+                    <canvas id="geoChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Link Modal -->
+    <div id="create-link-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Create Affiliate Link</h2>
+                <button onclick="hideCreateLinkModal()" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <form id="loginForm">
+            
+            <form id="create-link-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product/URL</label>
+                        <select id="link-product" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="">Select a product</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Custom URL (optional)</label>
+                        <input type="url" id="link-custom-url" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://example.com/product">
+                    </div>
+                </div>
+                
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Phone Number</label>
-                    <input type="tel" id="loginPhone" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="+1234567890" required>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Link Name</label>
+                    <input type="text" id="link-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="My Awesome Product Link">
                 </div>
-                <button type="submit" class="w-full bg-neon hover:bg-green-400 text-black font-semibold py-3 rounded-lg transition-all duration-300">
-                    <i class="fas fa-sms mr-2"></i>Send OTP Code
-                </button>
-            </form>
-            <div id="otpVerification" class="hidden mt-6">
+                
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Enter OTP Code</label>
-                    <input type="text" id="otpCode" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none text-center text-2xl" placeholder="123456" maxlength="6" required>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">AI Generate Description</label>
+                    <div class="flex space-x-2">
+                        <input type="text" id="ai-prompt" class="flex-1 border border-gray-300 rounded-lg px-3 py-2" placeholder="Describe your target audience or marketing angle...">
+                        <button type="button" onclick="generateAIDescription()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                            <i class="fas fa-magic mr-1"></i>Generate
+                        </button>
+                    </div>
                 </div>
-                <button onclick="verifyOTP()" class="w-full bg-cyber hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-300">
-                    <i class="fas fa-check mr-2"></i>Verify & Login
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Signup Modal -->
-    <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-gray-800 p-8 rounded-lg max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-neon">Join Affiliate Boss</h2>
-                <button onclick="hideModals()" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="signupForm">
-                <div class="grid md:grid-cols-2 gap-4 mb-4">
-                    <input type="text" id="firstName" class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="First Name" required>
-                    <input type="text" id="lastName" class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="Last Name" required>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="link-description" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24" placeholder="Description for your affiliate link..."></textarea>
                 </div>
-                <div class="mb-4">
-                    <input type="email" id="email" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="Email Address" required>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="hideCreateLinkModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-link mr-1"></i>Create Link
+                    </button>
                 </div>
-                <div class="mb-4">
-                    <input type="tel" id="phone" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="Phone Number (+1234567890)" required>
-                </div>
-                <div class="mb-4">
-                    <input type="text" id="username" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:border-neon focus:outline-none" placeholder="Username" required>
-                </div>
-                <button type="submit" class="w-full bg-neon hover:bg-green-400 text-black font-semibold py-3 rounded-lg transition-all duration-300">
-                    <i class="fas fa-rocket mr-2"></i>Create Account
-                </button>
             </form>
         </div>
     </div>
 
-    <script>
-        function showLogin() {
-            document.getElementById('loginModal').classList.remove('hidden')
-            document.getElementById('signupModal').classList.add('hidden')
-        }
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="fixed bottom-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toast-message">Success message</span>
+        </div>
+    </div>
 
-        function showSignup() {
-            document.getElementById('signupModal').classList.remove('hidden')
-            document.getElementById('loginModal').classList.add('hidden')
-        }
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="flex items-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
+                <span class="text-lg font-medium text-gray-800">Loading...</span>
+            </div>
+        </div>
+    </div>
 
-        function hideModals() {
-            document.getElementById('loginModal').classList.add('hidden')
-            document.getElementById('signupModal').classList.add('hidden')
-        }
-
-        function scrollToFeatures() {
-            document.getElementById('features').scrollIntoView({ behavior: 'smooth' })
-        }
-
-        function showDemo() {
-            window.location.href = '/dashboard'
-        }
-
-        // Login form handling
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault()
-            const phone = document.getElementById('loginPhone').value
-            
-            try {
-                const response = await fetch('/api/auth/send-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, type: 'login' })
-                })
-                const data = await response.json()
-                
-                if (data.success) {
-                    document.getElementById('otpVerification').classList.remove('hidden')
-                    alert('OTP code sent to your phone!')
-                } else {
-                    alert('Error: ' + data.error)
-                }
-            } catch (error) {
-                alert('Network error. Please try again.')
-            }
-        })
-
-        // Signup form handling
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault()
-            const formData = {
-                first_name: document.getElementById('firstName').value,
-                last_name: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                username: document.getElementById('username').value
-            }
-            
-            try {
-                const response = await fetch('/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                })
-                const data = await response.json()
-                
-                if (data.success) {
-                    alert('Account created! Check your phone for OTP verification.')
-                    showLogin()
-                } else {
-                    alert('Error: ' + data.error)
-                }
-            } catch (error) {
-                alert('Network error. Please try again.')
-            }
-        })
-
-        async function verifyOTP() {
-            const phone = document.getElementById('loginPhone').value
-            const code = document.getElementById('otpCode').value
-            
-            try {
-                const response = await fetch('/api/auth/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, code })
-                })
-                const data = await response.json()
-                
-                if (data.success) {
-                    localStorage.setItem('auth_token', data.token)
-                    window.location.href = '/dashboard'
-                } else {
-                    alert('Invalid OTP code. Please try again.')
-                }
-            } catch (error) {
-                alert('Network error. Please try again.')
-            }
-        }
-    </script>
+    <script src="/js/app.js"></script>
 </body>
 </html>
