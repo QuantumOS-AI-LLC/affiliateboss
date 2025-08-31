@@ -1,14 +1,28 @@
 {
-  "rewrites": [
-    { "source": "/go/(.*)", "destination": "/api/redirect" },
-    { "source": "/api/(.*)", "destination": "/api/$1" }
-  ],
+  "version": 2,
+  "name": "affiliate-boss",
   "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "public/**/*.html", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+    {
+      "src": "server/dev-server.js",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/public/index.html" }
-  ]
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/dev-server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server/dev-server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "server/dev-server.js": {
+      "maxDuration": 10
+    }
+  }
 }
-
