@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Boss - Merchant Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .gradient-bg { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="text-white">
+                        <i class="fas fa-store text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold">Affiliate Boss</span>
+                        <span class="ml-2 text-sm bg-white bg-opacity-20 px-2 py-1 rounded">MERCHANT</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6 ml-8">
+                        <a href="#overview" onclick="showSection('overview')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-chart-pie mr-1"></i> Overview
+                        </a>
+                        <a href="#affiliates" onclick="showSection('affiliates')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-users mr-1"></i> Affiliates
+                        </a>
+                        <a href="#recruitment" onclick="showSection('recruitment')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-user-plus mr-1"></i> Recruitment
+                        </a>
+                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-percentage mr-1"></i> Commissions
+                        </a>
+                        <a href="#communications" onclick="showSection('communications')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-comments mr-1"></i> Messages
+                        </a>
+                        <a href="#resources" onclick="showSection('resources')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                            <i class="fas fa-graduation-cap mr-1"></i> Resources
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-white text-sm">
+                        <i class="fas fa-store mr-1"></i>
+                        <span id="store-name">Demo Fashion Store</span>
+                        <span class="ml-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold">PLUS PLAN</span>
+                    </div>
+                    <button onclick="showNotifications()" class="text-white hover:text-blue-200 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="notification-count">5</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Overview Section -->
+        <div id="overview-section" class="section fade-in">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Program Overview</h1>
+                <p class="text-gray-600">Manage your affiliate network and track program performance.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Active Affiliates</p>
+                            <p class="text-2xl font-bold text-blue-600" id="total-affiliates">127</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-users text-blue-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-blue-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +8 new this month
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Sales from Affiliates</p>
+                            <p class="text-2xl font-bold text-green-600" id="affiliate-sales">$89,234</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-dollar-sign text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-green-600">
+                        <i class="fas fa-arrow-up mr-1"></i> +15.3% this month
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Commissions Paid</p>
+                            <p class="text-2xl font-bold text-purple-600" id="commissions-paid">$12,847</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-hand-holding-usd text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-purple-600">
+                        <i class="fas fa-arrow-up mr-1"></i> Average 14.4% rate
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Pending Applications</p>
+                            <p class="text-2xl font-bold text-orange-600" id="pending-apps">23</p>
+                        </div>
+                        <div class="bg-orange-100 p-3 rounded-full">
+                            <i class="fas fa-clock text-orange-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-orange-600">
+                        <i class="fas fa-exclamation-circle mr-1"></i> Needs review
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Affiliate Sales Trend</h3>
+                    <canvas id="salesTrendChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Top Performing Affiliates</h3>
+                    <canvas id="topAffiliatesChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Recent Applications</h3>
+                    <div class="space-y-3" id="recent-applications">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <button onclick="showSection('affiliates')" class="mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        Review All Applications →
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Top Affiliate Activities</h3>
+                    <div class="space-y-3" id="top-activities">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Affiliates Management Section -->
+        <div id="affiliates-section" class="section hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Management</h1>
+                    <p class="text-gray-600">Manage your affiliate network, applications, and performance</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="showInviteModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-user-plus mr-2"></i>Invite Affiliate
+                    </button>
+                    <button onclick="exportAffiliates()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i>Export Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs for different affiliate statuses -->
+            <div class="mb-6">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-8">
+                        <button onclick="showAffiliateTab('all')" class="affiliate-tab border-b-2 border-blue-500 text-blue-600 font-medium py-2 px-1">
+                            All Affiliates (127)
+                        </button>
+                        <button onclick="showAffiliateTab('pending')" class="affiliate-tab border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium py-2 px-1">
+                            Pending (23)
+                        </button>
+                        <button onclick="showAffiliateTab('active')" class="affiliate-tab border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium py-2 px-1">
+                            Active (89)
+                        </button>
+                        <button onclick="showAffiliateTab('top')" class="affiliate-tab border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium py-2 px-1">
+                            Top Performers (15)
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Affiliate Filters -->
+            <div class="bg-white p-4 rounded-lg card-shadow mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <input type="text" placeholder="Search affiliates..." class="border border-gray-300 rounded-lg px-3 py-2" id="affiliate-search">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2" id="affiliate-tier-filter">
+                        <option value="">All Tiers</option>
+                        <option value="bronze">Bronze</option>
+                        <option value="silver">Silver</option>
+                        <option value="gold">Gold</option>
+                        <option value="platinum">Platinum</option>
+                        <option value="diamond">Diamond</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2" id="affiliate-performance-filter">
+                        <option value="">All Performance</option>
+                        <option value="high">High Performers</option>
+                        <option value="medium">Medium Performers</option>
+                        <option value="low">Needs Improvement</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2" id="affiliate-date-filter">
+                        <option value="">All Time</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="365">Last year</option>
+                    </select>
+                    <button onclick="filterAffiliates()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-filter mr-2"></i>Apply Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Affiliates Table -->
+            <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Affiliate</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tier</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sales</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commission</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="affiliates-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recruitment Section -->
+        <div id="recruitment-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Recruitment</h1>
+                <p class="text-gray-600">Find, invite, and onboard new affiliates to grow your program</p>
+            </div>
+
+            <!-- Recruitment Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Public Application Page</h4>
+                    <p class="text-3xl font-bold mb-2">47</p>
+                    <p class="text-blue-100">Applications this month</p>
+                    <button onclick="viewApplicationPage()" class="mt-3 bg-white bg-opacity-20 text-white px-4 py-2 rounded hover:bg-opacity-30">
+                        View Page →
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Direct Invitations</h4>
+                    <p class="text-3xl font-bold mb-2">23</p>
+                    <p class="text-green-100">Sent this month</p>
+                    <button onclick="showInviteModal()" class="mt-3 bg-white bg-opacity-20 text-white px-4 py-2 rounded hover:bg-opacity-30">
+                        Send Invite →
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-lg text-white">
+                    <h4 class="text-lg font-semibold mb-2">Conversion Rate</h4>
+                    <p class="text-3xl font-bold mb-2">34%</p>
+                    <p class="text-purple-100">Invites to signups</p>
+                    <button onclick="viewRecruitmentAnalytics()" class="mt-3 bg-white bg-opacity-20 text-white px-4 py-2 rounded hover:bg-opacity-30">
+                        Analytics →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recruitment Tools -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">
+                        <i class="fas fa-link text-blue-600 mr-2"></i>
+                        Application Page Setup
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Public Application URL</label>
+                            <div class="flex">
+                                <input type="text" value="https://yourstore.com/affiliates/apply" readonly class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 bg-gray-50">
+                                <button onclick="copyApplicationUrl()" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Application Message</label>
+                            <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24" placeholder="Customize your application page message...">Join our affiliate program and earn up to 20% commission on every sale! We provide marketing materials, dedicated support, and fast payouts.</textarea>
+                        </div>
+                        <button onclick="updateApplicationPage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-save mr-2"></i>Update Page
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">
+                        <i class="fas fa-envelope text-green-600 mr-2"></i>
+                        Bulk Invitation Tool
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Addresses (one per line)</label>
+                            <textarea id="bulk-emails" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-32" placeholder="potential.affiliate1@email.com&#10;potential.affiliate2@email.com&#10;..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Invitation Template</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option>Standard Invitation</option>
+                                <option>High-Value Opportunity</option>
+                                <option>Influencer Invitation</option>
+                                <option>Custom Template</option>
+                            </select>
+                        </div>
+                        <button onclick="sendBulkInvitations()" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Invitations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communications Section -->
+        <div id="communications-section" class="section hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Communications</h1>
+                    <p class="text-gray-600">Send messages, announcements, and stay connected with your affiliates</p>
+                </div>
+                <button onclick="showNewMessageModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>New Message
+                </button>
+            </div>
+
+            <!-- Communication Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <i class="fas fa-envelope text-blue-600 text-2xl mb-2"></i>
+                    <p class="text-2xl font-bold text-gray-800">156</p>
+                    <p class="text-sm text-gray-600">Messages Sent</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <i class="fas fa-eye text-green-600 text-2xl mb-2"></i>
+                    <p class="text-2xl font-bold text-gray-800">89%</p>
+                    <p class="text-sm text-gray-600">Open Rate</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <i class="fas fa-mouse-pointer text-purple-600 text-2xl mb-2"></i>
+                    <p class="text-2xl font-bold text-gray-800">45%</p>
+                    <p class="text-sm text-gray-600">Click Rate</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <i class="fas fa-comments text-orange-600 text-2xl mb-2"></i>
+                    <p class="text-2xl font-bold text-gray-800">23</p>
+                    <p class="text-sm text-gray-600">Active Threads</p>
+                </div>
+            </div>
+
+            <!-- Message Center -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Message Types -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white p-6 rounded-lg card-shadow mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button onclick="sendAnnouncement()" class="w-full text-left p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                                <i class="fas fa-bullhorn text-blue-600 mr-3"></i>
+                                <span class="font-medium">Send Announcement</span>
+                            </button>
+                            <button onclick="sendNewsletter()" class="w-full text-left p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+                                <i class="fas fa-newspaper text-green-600 mr-3"></i>
+                                <span class="font-medium">Newsletter Update</span>
+                            </button>
+                            <button onclick="sendPromotion()" class="w-full text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
+                                <i class="fas fa-percent text-purple-600 mr-3"></i>
+                                <span class="font-medium">Promotion Alert</span>
+                            </button>
+                            <button onclick="sendTraining()" class="w-full text-left p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors">
+                                <i class="fas fa-graduation-cap text-orange-600 mr-3"></i>
+                                <span class="font-medium">Training Material</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Messages -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-lg card-shadow">
+                        <h3 class="text-lg font-semibold mb-4">Recent Messages</h3>
+                        <div class="space-y-4" id="recent-messages">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Management Section -->
+        <div id="commissions-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Commission Management</h1>
+                <p class="text-gray-600">Configure commission rates, tiers, and bonus structures</p>
+            </div>
+
+            <!-- Commission Structure -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Tier Structure</h3>
+                    <div class="space-y-4" id="tier-structure">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Commission Analytics</h3>
+                    <canvas id="commissionAnalyticsChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div id="resources-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Resources</h1>
+                <p class="text-gray-600">Training materials, marketing assets, and support resources for your affiliates</p>
+            </div>
+
+            <!-- Resource Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <i class="fas fa-graduation-cap text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">Training Materials</h3>
+                    <p class="text-gray-600 mb-4">Onboarding guides, video tutorials, and best practices</p>
+                    <button onclick="manageTrainingMaterials()" class="text-blue-600 hover:text-blue-800 font-medium">
+                        Manage Resources →
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <i class="fas fa-images text-green-600 text-3xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">Marketing Assets</h3>
+                    <p class="text-gray-600 mb-4">Banners, product images, and promotional materials</p>
+                    <button onclick="manageMarketingAssets()" class="text-green-600 hover:text-green-800 font-medium">
+                        View Assets →
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <i class="fas fa-life-ring text-purple-600 text-3xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">Support Center</h3>
+                    <p class="text-gray-600 mb-4">FAQs, contact information, and help documentation</p>
+                    <button onclick="manageSupportCenter()" class="text-purple-600 hover:text-purple-800 font-medium">
+                        Setup Support →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Invite Affiliate Modal -->
+    <div id="invite-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Invite New Affiliate</h2>
+                <button onclick="hideInviteModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="invite-form">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="invite-email" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="affiliate@example.com" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="invite-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Initial Commission Tier</label>
+                        <select id="invite-tier" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="bronze">Bronze (8%)</option>
+                            <option value="silver">Silver (10%)</option>
+                            <option value="gold" selected>Gold (12%)</option>
+                            <option value="platinum">Platinum (15%)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Personal Message</label>
+                        <textarea id="invite-message" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24" placeholder="Hi [Name], I'd like to invite you to join our affiliate program..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="hideInviteModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-paper-plane mr-1"></i>Send Invitation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="fixed bottom-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg hidden">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toast-message">Success message</span>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="flex items-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
+                <span class="text-lg font-medium text-gray-800">Processing...</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

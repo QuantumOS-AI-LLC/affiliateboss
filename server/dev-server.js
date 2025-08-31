@@ -16,6 +16,7 @@ const analyticsRouter = require('./routes/analytics');
 const paymentsRouter = require('./routes/payments');
 const settingsRouter = require('./routes/settings');
 const authRouter = require('./routes/auth');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -71,6 +72,7 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -103,49 +105,35 @@ app.get('/api/demo-key', (req, res) => {
     });
 });
 
-// Main dashboard route
+// Route handlers for different interfaces
 app.get('/', (req, res) => {
     const htmlPath = path.join(__dirname, '../public/index.html');
-    
-    if (fs.existsSync(htmlPath)) {
-        res.sendFile(htmlPath);
-    } else {
-        // If index.html doesn't exist, create a basic one
-        const basicHTML = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affiliate Boss Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-100">
-    <div id="app">
-        <div class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-rocket mr-2 text-blue-500"></i>
-                    Affiliate Boss Platform
-                </h1>
-                <p class="text-gray-600 mb-8">Loading complete dashboard...</p>
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        // Auto-redirect to dashboard when ready
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000);
-    </script>
-</body>
-</html>`;
-        res.send(basicHTML);
-    }
+    res.sendFile(htmlPath);
+});
+
+// Admin/Merchant dashboard
+app.get('/admin', (req, res) => {
+    const htmlPath = path.join(__dirname, '../public/admin.html');
+    res.sendFile(htmlPath);
+});
+
+// Public affiliate application page
+app.get('/apply', (req, res) => {
+    const htmlPath = path.join(__dirname, '../public/apply.html');
+    res.sendFile(htmlPath);
+});
+
+// Alternative routes for different user types
+app.get('/merchant', (req, res) => {
+    res.redirect('/admin');
+});
+
+app.get('/affiliate', (req, res) => {
+    res.redirect('/');
+});
+
+app.get('/join', (req, res) => {
+    res.redirect('/apply');
 });
 
 // Handle 404
@@ -154,15 +142,18 @@ app.use((req, res) => {
         error: 'Not Found',
         message: `Route ${req.method} ${req.path} not found`,
         available_routes: [
-            'GET /',
-            'GET /api/health',
-            'GET /api/demo-key',
-            'GET /api/links',
-            'GET /api/commissions',
-            'GET /api/products',
-            'GET /api/analytics',
-            'GET /api/payments',
-            'GET /api/settings'
+            'GET / - Affiliate Dashboard',
+            'GET /admin - Merchant Admin Panel',
+            'GET /apply - Public Application Page',
+            'GET /api/health - Health Check',
+            'GET /api/demo-key - Demo API Key',
+            'GET /api/links - Affiliate Links API',
+            'GET /api/commissions - Commissions API',
+            'GET /api/products - Products API',
+            'GET /api/analytics - Analytics API',
+            'GET /api/payments - Payments API',
+            'GET /api/settings - Settings API',
+            'GET /api/admin/* - Admin Management API'
         ]
     });
 });
