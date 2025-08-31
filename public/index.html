@@ -28,29 +28,32 @@
                         <i class="fas fa-chart-line text-2xl"></i>
                         <span class="ml-2 text-xl font-bold">Affiliate Boss</span>
                     </div>
-                    <div class="hidden md:flex space-x-6 ml-8">
-                        <a href="#dashboard" onclick="showSection('dashboard')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                    <div class="hidden md:flex space-x-4 ml-8">
+                        <a href="#dashboard" onclick="showSection('dashboard')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
                             <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
                         </a>
-                        <a href="#links" onclick="showSection('links')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                        <a href="#links" onclick="showSection('links')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
                             <i class="fas fa-link mr-1"></i> Links
                         </a>
-                        <a href="#products" onclick="showSection('products')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                        <a href="#products" onclick="showSection('products')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
                             <i class="fas fa-shopping-bag mr-1"></i> Products
                         </a>
-                        <a href="#shopify" onclick="showSection('shopify')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fab fa-shopify mr-1"></i> Shopify
+                        <a href="#referrals" onclick="showSection('referrals')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-users mr-1"></i> Referrals
                         </a>
-                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-dollar-sign mr-1"></i> Commissions
+                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-dollar-sign mr-1"></i> Earnings
                         </a>
-                        <a href="#analytics" onclick="showSection('analytics')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-chart-bar mr-1"></i> Analytics
+                        <a href="#tools" onclick="showSection('tools')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-toolbox mr-1"></i> Tools
+                        </a>
+                        <a href="#profile" onclick="showSection('profile')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-user-cog mr-1"></i> Profile
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="text-white text-sm">
+                    <div class="text-white text-sm hidden md:block">
                         <i class="fas fa-user-circle mr-1"></i>
                         <span id="user-name">John Doe</span>
                         <span class="ml-2 bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold" id="user-tier">GOLD</span>
@@ -59,6 +62,43 @@
                         <i class="fas fa-bell text-lg"></i>
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="notification-count">3</span>
                     </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-blue-200">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 border-t border-blue-600">
+            <div class="px-4 py-2 space-y-1">
+                <a href="#dashboard" onclick="showSection('dashboard'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                </a>
+                <a href="#links" onclick="showSection('links'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-link mr-2"></i> Links
+                </a>
+                <a href="#products" onclick="showSection('products'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-shopping-bag mr-2"></i> Products
+                </a>
+                <a href="#referrals" onclick="showSection('referrals'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-users mr-2"></i> Referrals
+                </a>
+                <a href="#commissions" onclick="showSection('commissions'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-dollar-sign mr-2"></i> Earnings
+                </a>
+                <a href="#tools" onclick="showSection('tools'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-toolbox mr-2"></i> Tools
+                </a>
+                <a href="#profile" onclick="showSection('profile'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-user-cog mr-2"></i> Profile
+                </a>
+                <div class="border-t border-blue-600 pt-2 mt-2">
+                    <div class="text-white text-sm px-2 py-1">
+                        <i class="fas fa-user-circle mr-1"></i>
+                        <span id="mobile-user-name">John Doe</span>
+                        <span class="ml-2 bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold">GOLD</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,88 +275,91 @@
                     <h1 class="text-3xl font-bold text-gray-800 mb-2">Product Catalog</h1>
                     <p class="text-gray-600">Browse and create affiliate links for available products</p>
                 </div>
-                <button onclick="syncShopifyProducts()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="fab fa-shopify mr-2"></i>Sync Shopify
-                </button>
+                <div class="flex space-x-2">
+                    <button onclick="syncShopifyProducts()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fab fa-shopify mr-2"></i>Sync Shopify
+                    </button>
+                    <button onclick="showAddProductModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add Product
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Filters -->
+            <div class="bg-white p-4 rounded-lg card-shadow mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <input type="text" placeholder="Search products..." class="border border-gray-300 rounded-lg px-3 py-2" id="product-search">
+                    <select id="product-category" class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home & Garden</option>
+                        <option value="health">Health & Beauty</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                    <select id="product-sort" class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option value="name">Sort by Name</option>
+                        <option value="price">Sort by Price</option>
+                        <option value="commission">Sort by Commission</option>
+                        <option value="popularity">Sort by Popularity</option>
+                    </select>
+                    <select id="commission-filter" class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option value="">All Commission Rates</option>
+                        <option value="5">5%+</option>
+                        <option value="10">10%+</option>
+                        <option value="15">15%+</option>
+                        <option value="20">20%+</option>
+                    </select>
+                    <button onclick="filterProducts()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-filter mr-2"></i>Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="total-products">247</div>
+                    <div class="text-sm text-gray-600">Total Products</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-green-600" id="avg-commission">12.5%</div>
+                    <div class="text-sm text-gray-600">Avg Commission</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="top-seller">iPhone 15</div>
+                    <div class="text-sm text-gray-600">Top Seller</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-orange-600" id="new-products">12</div>
+                    <div class="text-sm text-gray-600">New This Week</div>
+                </div>
             </div>
 
             <!-- Product Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
                 <!-- Will be populated by JavaScript -->
             </div>
-        </div>
 
-        <!-- Shopify Section -->
-        <div id="shopify-section" class="section hidden">
-            <div class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Shopify Integration</h1>
-                <p class="text-gray-600">Connect and manage your Shopify stores</p>
-            </div>
-
-            <!-- Connection Status -->
-            <div class="bg-white p-6 rounded-lg card-shadow mb-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="bg-green-100 p-3 rounded-full mr-4">
-                            <i class="fab fa-shopify text-green-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Demo Fashion Store</h3>
-                            <p class="text-gray-600">demo-fashion.myshopify.com</p>
-                            <div class="flex items-center mt-1">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                                <span class="text-green-600 text-sm font-medium">Connected & Syncing</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-2xl font-bold text-gray-800">247</p>
-                        <p class="text-sm text-gray-600">Products Synced</p>
-                        <p class="text-xs text-gray-500">Last sync: 5 min ago</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Store Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h4 class="font-semibold text-gray-800 mb-2">Orders Today</h4>
-                    <p class="text-2xl font-bold text-blue-600">23</p>
-                    <p class="text-sm text-gray-600">$1,847.30 revenue</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h4 class="font-semibold text-gray-800 mb-2">Commission Earned</h4>
-                    <p class="text-2xl font-bold text-green-600">$184.73</p>
-                    <p class="text-sm text-gray-600">10% average rate</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h4 class="font-semibold text-gray-800 mb-2">Pending Payouts</h4>
-                    <p class="text-2xl font-bold text-orange-600">$523.45</p>
-                    <p class="text-sm text-gray-600">Next payout: Friday</p>
-                </div>
-            </div>
-
-            <!-- Recent Orders -->
-            <div class="bg-white p-6 rounded-lg card-shadow">
-                <h3 class="text-lg font-semibold mb-4">Recent Shopify Orders</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="shopify-orders-table" class="divide-y divide-gray-200">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Pagination -->
+            <div class="flex justify-center mt-8">
+                <nav class="flex items-center space-x-2">
+                    <button onclick="previousPage()" class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="px-4 py-2 bg-blue-600 text-white rounded">1</span>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">2</button>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">3</button>
+                    <span class="px-2 text-gray-400">...</span>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">10</button>
+                    <button onclick="nextPage()" class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
             </div>
         </div>
+
+
 
         <!-- Commissions Section -->
         <div id="commissions-section" class="section hidden">
@@ -349,15 +392,133 @@
                 </div>
             </div>
 
+            <!-- Tier Information -->
+            <div class="bg-white p-6 rounded-lg card-shadow mb-6">
+                <h3 class="text-lg font-semibold mb-4">Tier Benefits</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
+                    <div class="p-4 border-2 border-gray-200 rounded-lg">
+                        <div class="text-gray-600 font-semibold">BRONZE</div>
+                        <div class="text-2xl font-bold text-orange-600 mt-2">5%</div>
+                        <div class="text-sm text-gray-500">$0 - $999</div>
+                    </div>
+                    <div class="p-4 border-2 border-gray-200 rounded-lg">
+                        <div class="text-gray-600 font-semibold">SILVER</div>
+                        <div class="text-2xl font-bold text-gray-500 mt-2">8%</div>
+                        <div class="text-sm text-gray-500">$1K - $4.9K</div>
+                    </div>
+                    <div class="p-4 border-2 border-yellow-400 rounded-lg bg-yellow-50">
+                        <div class="text-yellow-800 font-semibold">GOLD</div>
+                        <div class="text-2xl font-bold text-yellow-600 mt-2">12%</div>
+                        <div class="text-sm text-yellow-700">$5K - $14.9K</div>
+                        <div class="text-xs text-yellow-600 mt-1">Current</div>
+                    </div>
+                    <div class="p-4 border-2 border-gray-200 rounded-lg">
+                        <div class="text-gray-600 font-semibold">PLATINUM</div>
+                        <div class="text-2xl font-bold text-gray-400 mt-2">18%</div>
+                        <div class="text-sm text-gray-500">$15K - $49.9K</div>
+                    </div>
+                    <div class="p-4 border-2 border-gray-200 rounded-lg">
+                        <div class="text-gray-600 font-semibold">DIAMOND</div>
+                        <div class="text-2xl font-bold text-blue-400 mt-2">25%</div>
+                        <div class="text-sm text-gray-500">$50K+</div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <div class="text-sm text-gray-600">Progress to next tier:</div>
+                    <div class="bg-gray-200 rounded-full h-3 mt-2">
+                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 h-3 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <div class="text-sm text-gray-600 mt-1">$2,152.50 more to reach PLATINUM</div>
+                </div>
+            </div>
+
+            <!-- Payout Information -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Next Payout</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-gray-600">Scheduled Date:</span>
+                        <span class="font-semibold">Friday, Aug 30</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-gray-600">Amount:</span>
+                        <span class="font-semibold text-green-600">$523.45</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-gray-600">Method:</span>
+                        <span class="font-semibold">PayPal</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-gray-600">Processing Fee:</span>
+                        <span class="font-semibold">$2.50</span>
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600 font-semibold">Net Payout:</span>
+                            <span class="font-bold text-green-600 text-lg">$520.95</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Payout Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Payout</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="50">$50</option>
+                                <option value="100" selected>$100</option>
+                                <option value="250">$250</option>
+                                <option value="500">$500</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="paypal" selected>PayPal</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="stripe">Stripe</option>
+                                <option value="crypto">Cryptocurrency</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Payout Schedule</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="weekly" selected>Weekly (Fridays)</option>
+                                <option value="biweekly">Bi-weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-save mr-2"></i>Update Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Commission History -->
             <div class="bg-white p-6 rounded-lg card-shadow">
-                <h3 class="text-lg font-semibold mb-4">Commission History</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Commission History</h3>
+                    <div class="flex space-x-2">
+                        <select id="commission-filter" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                        <button onclick="exportCommissions()" class="bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700">
+                            <i class="fas fa-download mr-1"></i>Export
+                        </button>
+                    </div>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sale Amount</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rate</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission</th>
@@ -369,41 +530,510 @@
                         </tbody>
                     </table>
                 </div>
+                
+                <!-- Pagination -->
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-sm text-gray-600">
+                        Showing <span class="font-medium">1</span> to <span class="font-medium">20</span> of <span class="font-medium">97</span> results
+                    </div>
+                    <nav class="flex items-center space-x-2">
+                        <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="px-4 py-2 bg-blue-600 text-white rounded">1</span>
+                        <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">2</button>
+                        <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">3</button>
+                        <button class="px-3 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </nav>
+                </div>
             </div>
         </div>
 
-        <!-- Analytics Section -->
-        <div id="analytics-section" class="section hidden">
-            <div class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Performance Analytics</h1>
-                <p class="text-gray-600">Deep dive into your affiliate marketing performance</p>
+        <!-- Referrals Section -->
+        <div id="referrals-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Referral Program</h1>
+                <p class="text-gray-600">Build your affiliate network and earn from referrals</p>
             </div>
 
-            <!-- Time Range Selector -->
-            <div class="bg-white p-4 rounded-lg card-shadow mb-6">
-                <div class="flex items-center space-x-4">
-                    <label class="text-sm font-medium text-gray-700">Time Range:</label>
-                    <select id="analytics-timeframe" class="border border-gray-300 rounded px-3 py-2">
-                        <option value="7">Last 7 days</option>
-                        <option value="30" selected>Last 30 days</option>
-                        <option value="90">Last 90 days</option>
-                        <option value="365">Last year</option>
-                    </select>
-                    <button onclick="updateAnalytics()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        Update
-                    </button>
+            <!-- Referral Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-r from-purple-500 to-purple-700 p-6 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-purple-100">Total Referrals</p>
+                            <p class="text-3xl font-bold" id="total-referrals">23</p>
+                        </div>
+                        <i class="fas fa-users text-4xl text-purple-200"></i>
+                    </div>
+                    <p class="text-sm text-purple-100 mt-2">+5 this month</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-500 to-green-700 p-6 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-100">Referral Earnings</p>
+                            <p class="text-3xl font-bold" id="referral-earnings">$1,247.50</p>
+                        </div>
+                        <i class="fas fa-dollar-sign text-4xl text-green-200"></i>
+                    </div>
+                    <p class="text-sm text-green-100 mt-2">5% commission rate</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-6 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-100">Active Referrals</p>
+                            <p class="text-3xl font-bold" id="active-referrals">18</p>
+                        </div>
+                        <i class="fas fa-chart-line text-4xl text-blue-200"></i>
+                    </div>
+                    <p class="text-sm text-blue-100 mt-2">78% active rate</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-500 to-orange-700 p-6 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-orange-100">Tier Bonuses</p>
+                            <p class="text-3xl font-bold" id="tier-bonuses">$325.00</p>
+                        </div>
+                        <i class="fas fa-trophy text-4xl text-orange-200"></i>
+                    </div>
+                    <p class="text-sm text-orange-100 mt-2">Gold tier bonus</p>
                 </div>
             </div>
 
-            <!-- Analytics Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Referral Tools -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Referral Link Generator -->
                 <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h3 class="text-lg font-semibold mb-4">Traffic Sources</h3>
-                    <canvas id="trafficChart" width="400" height="300"></canvas>
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-link text-blue-600 mr-2"></i>
+                        Your Referral Link
+                    </h3>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Share this link to earn referral commissions:</label>
+                        <div class="flex">
+                            <input type="text" id="referral-link" class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 bg-gray-50" 
+                                value="https://affiliate-boss.vercel.app/apply?ref=john_123456789" readonly>
+                            <button onclick="copyReferralLink()" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Sharing -->
+                    <div class="flex space-x-2">
+                        <button onclick="shareToFacebook()" class="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900">
+                            <i class="fab fa-facebook-f mr-1"></i> Facebook
+                        </button>
+                        <button onclick="shareToTwitter()" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">
+                            <i class="fab fa-twitter mr-1"></i> Twitter
+                        </button>
+                        <button onclick="shareToLinkedIn()" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">
+                            <i class="fab fa-linkedin-in mr-1"></i> LinkedIn
+                        </button>
+                    </div>
                 </div>
+
+                <!-- QR Code Generator -->
                 <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h3 class="text-lg font-semibold mb-4">Geographic Performance</h3>
-                    <canvas id="geoChart" width="400" height="300"></canvas>
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-qrcode text-purple-600 mr-2"></i>
+                        QR Code
+                    </h3>
+                    <div class="text-center">
+                        <div id="qr-code" class="inline-block p-4 bg-white border-2 border-gray-200 rounded-lg mb-4">
+                            <!-- QR Code will be generated here -->
+                            <div class="w-48 h-48 bg-gray-100 flex items-center justify-center text-gray-500">
+                                QR Code
+                            </div>
+                        </div>
+                        <div class="space-x-2">
+                            <button onclick="downloadQRCode()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                                <i class="fas fa-download mr-1"></i> Download
+                            </button>
+                            <button onclick="printQRCode()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                                <i class="fas fa-print mr-1"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral List -->
+            <div class="bg-white rounded-lg card-shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-xl font-semibold">Your Referrals</h3>
+                    <p class="text-gray-600">Track performance of your referred affiliates</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Affiliate</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earnings</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Your Commission</th>
+                            </tr>
+                        </thead>
+                        <tbody id="referrals-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Section -->
+        <div id="tools-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Marketing Tools</h1>
+                <p class="text-gray-600">Professional tools to maximize your affiliate success</p>
+            </div>
+
+            <!-- Tool Categories -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                <!-- Link Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-link text-2xl text-blue-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Link Management</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showLinkCloaker()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-mask mr-2 text-blue-600"></i>
+                            Link Cloaker
+                            <p class="text-sm text-gray-600 mt-1">Hide and beautify your affiliate links</p>
+                        </button>
+                        <button onclick="showBulkLinkGenerator()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-plus-circle mr-2 text-green-600"></i>
+                            Bulk Link Generator
+                            <p class="text-sm text-gray-600 mt-1">Create multiple links at once</p>
+                        </button>
+                        <button onclick="showLinkRotator()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-random mr-2 text-purple-600"></i>
+                            Link Rotator
+                            <p class="text-sm text-gray-600 mt-1">A/B test different offers</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Creative Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Creative Assets</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showBannerGenerator()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-image mr-2 text-purple-600"></i>
+                            Banner Generator
+                            <p class="text-sm text-gray-600 mt-1">Create professional banners</p>
+                        </button>
+                        <button onclick="showEmailTemplates()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                            Email Templates
+                            <p class="text-sm text-gray-600 mt-1">Ready-to-use email campaigns</p>
+                        </button>
+                        <button onclick="showSocialTemplates()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-share-alt mr-2 text-green-600"></i>
+                            Social Media Posts
+                            <p class="text-sm text-gray-600 mt-1">Pre-made social content</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-2xl text-orange-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">AI Assistant</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showAIContentGenerator()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-magic mr-2 text-orange-600"></i>
+                            Content Generator
+                            <p class="text-sm text-gray-600 mt-1">AI-powered product descriptions</p>
+                        </button>
+                        <button onclick="showAIEmailWriter()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-pen-fancy mr-2 text-red-600"></i>
+                            Email Writer
+                            <p class="text-sm text-gray-600 mt-1">Generate email campaigns</p>
+                        </button>
+                        <button onclick="showAISocialWriter()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-hashtag mr-2 text-blue-600"></i>
+                            Social Writer
+                            <p class="text-sm text-gray-600 mt-1">Create engaging social posts</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SMS Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-sms text-2xl text-green-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">SMS Marketing</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showSMSCampaigns()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-bullhorn mr-2 text-green-600"></i>
+                            SMS Campaigns
+                            <p class="text-sm text-gray-600 mt-1">Send promotional messages</p>
+                        </button>
+                        <button onclick="showPhoneVerification()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-shield-alt mr-2 text-blue-600"></i>
+                            Phone Verification
+                            <p class="text-sm text-gray-600 mt-1">Verify your phone number</p>
+                        </button>
+                        <button onclick="showSMSTemplates()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-clipboard-list mr-2 text-purple-600"></i>
+                            SMS Templates
+                            <p class="text-sm text-gray-600 mt-1">Pre-built message templates</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analytics Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chart-bar text-2xl text-indigo-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Analytics</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showAdvancedAnalytics()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-chart-line mr-2 text-indigo-600"></i>
+                            Advanced Analytics
+                            <p class="text-sm text-gray-600 mt-1">Deep performance insights</p>
+                        </button>
+                        <button onclick="showConversionTracking()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-target mr-2 text-red-600"></i>
+                            Conversion Tracking
+                            <p class="text-sm text-gray-600 mt-1">Track customer journey</p>
+                        </button>
+                        <button onclick="showReportsGenerator()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-file-alt mr-2 text-green-600"></i>
+                            Report Generator
+                            <p class="text-sm text-gray-600 mt-1">Custom performance reports</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Integration Tools -->
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-plug text-2xl text-yellow-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Integrations</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="showShopifyIntegration()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fab fa-shopify mr-2 text-green-600"></i>
+                            Shopify Connect
+                            <p class="text-sm text-gray-600 mt-1">Sync with Shopify stores</p>
+                        </button>
+                        <button onclick="showWordPressPlugin()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fab fa-wordpress mr-2 text-blue-600"></i>
+                            WordPress Plugin
+                            <p class="text-sm text-gray-600 mt-1">Add links to your blog</p>
+                        </button>
+                        <button onclick="showAPIAccess()" class="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-code mr-2 text-purple-600"></i>
+                            API Access
+                            <p class="text-sm text-gray-600 mt-1">Developer tools & API</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Content Area -->
+            <div id="tool-content" class="hidden">
+                <!-- Dynamic tool content will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Profile Settings</h1>
+                <p class="text-gray-600">Manage your account and affiliate settings</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Profile Info -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-lg card-shadow mb-6">
+                        <h3 class="text-xl font-semibold mb-4">Personal Information</h3>
+                        <form id="profile-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                    <input type="text" id="first-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="John">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                    <input type="text" id="last-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="Doe">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                    <input type="email" id="email" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="john.doe@example.com">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="phone" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="+1 (555) 123-4567">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                                    <textarea id="bio" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24" placeholder="Tell us about yourself...">Experienced affiliate marketer specializing in e-commerce and digital products.</textarea>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-save mr-2"></i>Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="bg-white p-6 rounded-lg card-shadow mb-6">
+                        <h3 class="text-xl font-semibold mb-4">Payment Information</h3>
+                        <form id="payment-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                                    <select id="payment-method" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                        <option value="paypal">PayPal</option>
+                                        <option value="bank">Bank Transfer</option>
+                                        <option value="stripe">Stripe</option>
+                                        <option value="crypto">Cryptocurrency</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Payout</label>
+                                    <select id="min-payout" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                        <option value="50">$50</option>
+                                        <option value="100">$100</option>
+                                        <option value="250">$250</option>
+                                        <option value="500">$500</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Payment Details</label>
+                                    <input type="text" id="payment-details" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="PayPal email, bank details, etc.">
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">
+                                    <i class="fas fa-credit-card mr-2"></i>Update Payment Info
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="bg-white p-6 rounded-lg card-shadow">
+                        <h3 class="text-xl font-semibold mb-4">Security Settings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-semibold">Two-Factor Authentication</h4>
+                                    <p class="text-sm text-gray-600">Secure your account with SMS verification</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-semibold">Email Notifications</h4>
+                                    <p class="text-sm text-gray-600">Get notified about commissions and updates</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <button onclick="showChangePasswordModal()" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700">
+                                <i class="fas fa-key mr-2"></i>Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Info -->
+                <div class="space-y-6">
+                    <!-- Account Status -->
+                    <div class="bg-white p-6 rounded-lg card-shadow">
+                        <h3 class="text-lg font-semibold mb-4">Account Status</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Status</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-medium">Active</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Tier</span>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-sm font-medium">GOLD</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Member Since</span>
+                                <span class="text-gray-800">Jan 2024</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Last Login</span>
+                                <span class="text-gray-800">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="bg-white p-6 rounded-lg card-shadow">
+                        <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Earnings</span>
+                                <span class="font-semibold text-green-600">$12,847.50</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">This Month</span>
+                                <span class="font-semibold">$2,847.50</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Active Links</span>
+                                <span class="font-semibold">47</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Conversion Rate</span>
+                                <span class="font-semibold">4.2%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tier Progress -->
+                    <div class="bg-white p-6 rounded-lg card-shadow">
+                        <h3 class="text-lg font-semibold mb-4">Tier Progress</h3>
+                        <div class="text-center mb-4">
+                            <div class="text-2xl font-bold text-yellow-600 mb-1">GOLD</div>
+                            <div class="text-sm text-gray-600">Current Tier</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Progress to DIAMOND</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            Need $2,152.50 more to reach Diamond tier
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -463,6 +1093,353 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div id="notifications-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Notifications</h2>
+                <button onclick="hideNotifications()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4 max-h-96 overflow-y-auto">
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-600 mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-blue-800">New Commission Earned</h4>
+                            <p class="text-blue-700 text-sm">You earned $24.50 from iPhone 15 sale</p>
+                            <p class="text-blue-600 text-xs mt-1">2 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-green-800">Payout Processed</h4>
+                            <p class="text-green-700 text-sm">$520.95 has been sent to your PayPal</p>
+                            <p class="text-green-600 text-xs mt-1">1 day ago</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-star text-purple-600 mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-purple-800">Tier Upgrade</h4>
+                            <p class="text-purple-700 text-sm">Congratulations! You've reached Gold tier</p>
+                            <p class="text-purple-600 text-xs mt-1">3 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button onclick="markAllRead()" class="text-blue-600 hover:text-blue-700 text-sm">
+                    Mark all as read
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Add New Product</h2>
+                <button onclick="hideAddProductModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="add-product-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                        <input type="text" id="product-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="iPhone 15 Pro Max">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                        <input type="number" id="product-price" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="999.99">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select id="product-category-select" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="electronics">Electronics</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="home">Home & Garden</option>
+                            <option value="health">Health & Beauty</option>
+                            <option value="sports">Sports</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Commission Rate (%)</label>
+                        <input type="number" id="commission-rate" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="12" min="1" max="50">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product URL</label>
+                    <input type="url" id="product-url" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://example.com/product">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                    <input type="url" id="product-image" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="product-description" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24" placeholder="Product description..."></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="hideAddProductModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-plus mr-1"></i>Add Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Change Password</h2>
+                <button onclick="hideChangePasswordModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="change-password-form">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                    <input type="password" id="current-password" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                    <input type="password" id="new-password" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                    <input type="password" id="confirm-password" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="hideChangePasswordModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                        <i class="fas fa-key mr-1"></i>Change Password
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Content Generator Modal -->
+    <div id="ai-content-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">AI Content Generator</h2>
+                <button onclick="hideAIContentModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Input Section -->
+                <div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
+                        <select id="ai-content-type" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="product-description">Product Description</option>
+                            <option value="email-campaign">Email Campaign</option>
+                            <option value="social-post">Social Media Post</option>
+                            <option value="blog-post">Blog Post</option>
+                            <option value="ad-copy">Advertisement Copy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product/Topic</label>
+                        <input type="text" id="ai-product-topic" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="iPhone 15 Pro Max">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+                        <input type="text" id="ai-target-audience" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Tech enthusiasts, professionals">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tone</label>
+                        <select id="ai-tone" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="professional">Professional</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="enthusiastic">Enthusiastic</option>
+                            <option value="persuasive">Persuasive</option>
+                            <option value="casual">Casual</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Additional Instructions</label>
+                        <textarea id="ai-instructions" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-20" placeholder="Include specific features, benefits, or call-to-action..."></textarea>
+                    </div>
+                    
+                    <button onclick="generateAIContent()" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700">
+                        <i class="fas fa-magic mr-2"></i>Generate Content
+                    </button>
+                </div>
+                
+                <!-- Output Section -->
+                <div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Generated Content</label>
+                        <div id="ai-loading" class="hidden text-center py-12">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                            <p class="text-gray-600">Generating content...</p>
+                        </div>
+                        <textarea id="ai-generated-content" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-64" placeholder="Generated content will appear here..." readonly></textarea>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="copyAIContent()" class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                        <button onclick="regenerateAIContent()" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-redo mr-1"></i>Regenerate
+                        </button>
+                        <button onclick="saveAITemplate()" class="flex-1 bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700">
+                            <i class="fas fa-save mr-1"></i>Save Template
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SMS Campaign Modal -->
+    <div id="sms-campaign-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-3xl mx-4 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">SMS Marketing Campaign</h2>
+                <button onclick="hideSMSCampaignModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Campaign Settings -->
+                <div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Campaign Name</label>
+                        <input type="text" id="sms-campaign-name" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="iPhone 15 Launch Campaign">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+                        <select id="sms-target-audience" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="all">All Subscribers</option>
+                            <option value="high-value">High-Value Customers</option>
+                            <option value="new-signups">New Signups</option>
+                            <option value="inactive">Inactive Users</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Send Time</label>
+                        <input type="datetime-local" id="sms-send-time" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Message (160 chars max)</label>
+                        <textarea id="sms-message" class="w-full border border-gray-300 rounded-lg px-3 py-2 h-20" maxlength="160" placeholder="🚀 New iPhone 15 is here! Get yours now with exclusive 15% off. Limited time! {affiliate_link}"></textarea>
+                        <div class="text-right text-sm text-gray-500">
+                            <span id="sms-char-count">0</span>/160 characters
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="sms-include-link" class="mr-2" checked>
+                            <label for="sms-include-link" class="text-sm font-medium text-gray-700">Include affiliate link</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview & Stats -->
+                <div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold mb-2">Message Preview</h3>
+                        <div class="bg-gray-100 p-4 rounded-lg border-2 border-dashed border-gray-300">
+                            <div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs">
+                                <div id="sms-preview-text">Your SMS message will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold mb-2">Campaign Stats</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-blue-600">1,247</div>
+                                <div class="text-sm text-blue-700">Recipients</div>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-green-600">$0.05</div>
+                                <div class="text-sm text-green-700">Cost per SMS</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-2">Estimated Reach</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span>Total Cost:</span>
+                                <span class="font-semibold">$62.35</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Expected CTR:</span>
+                                <span class="font-semibold">3.2%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Projected Clicks:</span>
+                                <span class="font-semibold">40</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="hideSMSCampaignModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button onclick="saveSMSDraft()" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-save mr-1"></i>Save Draft
+                </button>
+                <button onclick="scheduleSMSCampaign()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-paper-plane mr-1"></i>Schedule Campaign
+                </button>
+            </div>
         </div>
     </div>
 

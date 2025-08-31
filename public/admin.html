@@ -29,29 +29,32 @@
                         <span class="ml-2 text-xl font-bold">Affiliate Boss</span>
                         <span class="ml-2 text-sm bg-white bg-opacity-20 px-2 py-1 rounded">MERCHANT</span>
                     </div>
-                    <div class="hidden md:flex space-x-6 ml-8">
-                        <a href="#overview" onclick="showSection('overview')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                    <div class="hidden md:flex space-x-4 ml-8">
+                        <a href="#overview" onclick="showSection('overview')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
                             <i class="fas fa-chart-pie mr-1"></i> Overview
                         </a>
-                        <a href="#affiliates" onclick="showSection('affiliates')" class="nav-link text-white hover:text-blue-200 transition-colors">
+                        <a href="#affiliates" onclick="showSection('affiliates')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
                             <i class="fas fa-users mr-1"></i> Affiliates
                         </a>
-                        <a href="#recruitment" onclick="showSection('recruitment')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-user-plus mr-1"></i> Recruitment
+                        <a href="#products" onclick="showSection('products')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-box mr-1"></i> Products
                         </a>
-                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-percentage mr-1"></i> Commissions
+                        <a href="#commissions" onclick="showSection('commissions')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-percentage mr-1"></i> Payouts
                         </a>
-                        <a href="#communications" onclick="showSection('communications')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-comments mr-1"></i> Messages
+                        <a href="#marketing" onclick="showSection('marketing')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-bullhorn mr-1"></i> Marketing
                         </a>
-                        <a href="#resources" onclick="showSection('resources')" class="nav-link text-white hover:text-blue-200 transition-colors">
-                            <i class="fas fa-graduation-cap mr-1"></i> Resources
+                        <a href="#analytics" onclick="showSection('analytics')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-chart-bar mr-1"></i> Analytics
+                        </a>
+                        <a href="#settings" onclick="showSection('settings')" class="nav-link text-white hover:text-blue-200 transition-colors px-2 py-1 rounded">
+                            <i class="fas fa-cog mr-1"></i> Settings
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="text-white text-sm">
+                    <div class="text-white text-sm hidden md:block">
                         <i class="fas fa-store mr-1"></i>
                         <span id="store-name">Demo Fashion Store</span>
                         <span class="ml-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold">PLUS PLAN</span>
@@ -60,6 +63,43 @@
                         <i class="fas fa-bell text-lg"></i>
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="notification-count">5</span>
                     </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-blue-200">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 border-t border-blue-600">
+            <div class="px-4 py-2 space-y-1">
+                <a href="#overview" onclick="showSection('overview'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-chart-pie mr-2"></i> Overview
+                </a>
+                <a href="#affiliates" onclick="showSection('affiliates'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-users mr-2"></i> Affiliates
+                </a>
+                <a href="#products" onclick="showSection('products'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-box mr-2"></i> Products
+                </a>
+                <a href="#commissions" onclick="showSection('commissions'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-percentage mr-2"></i> Payouts
+                </a>
+                <a href="#marketing" onclick="showSection('marketing'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-bullhorn mr-2"></i> Marketing
+                </a>
+                <a href="#analytics" onclick="showSection('analytics'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-chart-bar mr-2"></i> Analytics
+                </a>
+                <a href="#settings" onclick="showSection('settings'); toggleMobileMenu()" class="block text-white hover:text-blue-200 py-2 px-2 rounded">
+                    <i class="fas fa-cog mr-2"></i> Settings
+                </a>
+                <div class="border-t border-blue-600 pt-2 mt-2">
+                    <div class="text-white text-sm px-2 py-1">
+                        <i class="fas fa-store mr-1"></i>
+                        <span>Demo Fashion Store</span>
+                        <span class="ml-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold">PLUS</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -448,39 +488,211 @@
             </div>
         </div>
 
-        <!-- Resources Section -->
-        <div id="resources-section" class="section hidden">
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Affiliate Resources</h1>
-                <p class="text-gray-600">Training materials, marketing assets, and support resources for your affiliates</p>
+        <!-- Products Section -->
+        <div id="products-section" class="section hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Product Management</h1>
+                    <p class="text-gray-600">Manage your product catalog and commission structures</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="syncShopifyProducts()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fab fa-shopify mr-2"></i>Sync Shopify
+                    </button>
+                    <button onclick="showAddProductModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add Product
+                    </button>
+                </div>
             </div>
 
-            <!-- Resource Categories -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Product Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="total-products-admin">247</div>
+                    <div class="text-sm text-gray-600">Total Products</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-green-600" id="avg-commission-admin">12.5%</div>
+                    <div class="text-sm text-gray-600">Avg Commission</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="bestseller-admin">iPhone 15</div>
+                    <div class="text-sm text-gray-600">Top Seller</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg card-shadow text-center">
+                    <div class="text-2xl font-bold text-orange-600" id="revenue-products">$89,234</div>
+                    <div class="text-sm text-gray-600">Revenue (30d)</div>
+                </div>
+            </div>
+
+            <!-- Product List -->
+            <div class="bg-white rounded-lg card-shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Product Catalog</h3>
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Search products..." class="border border-gray-300 rounded px-3 py-2 text-sm">
+                            <select class="border border-gray-300 rounded px-3 py-2 text-sm">
+                                <option value="">All Categories</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="home">Home & Garden</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sales</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-products-table" class="bg-white divide-y divide-gray-200">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marketing Section -->
+        <div id="marketing-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Marketing & Campaigns</h1>
+                <p class="text-gray-600">Create campaigns, manage promotional materials, and engage your affiliate network</p>
+            </div>
+
+            <!-- Marketing Tools Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-lg card-shadow">
-                    <i class="fas fa-graduation-cap text-blue-600 text-3xl mb-4"></i>
-                    <h3 class="text-lg font-semibold mb-2">Training Materials</h3>
-                    <p class="text-gray-600 mb-4">Onboarding guides, video tutorials, and best practices</p>
-                    <button onclick="manageTrainingMaterials()" class="text-blue-600 hover:text-blue-800 font-medium">
-                        Manage Resources →
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-envelope text-2xl text-blue-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Email Campaigns</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Send newsletters, promotions, and updates to your affiliate network</p>
+                    <button onclick="createEmailCampaign()" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                        Create Campaign
                     </button>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg card-shadow">
-                    <i class="fas fa-images text-green-600 text-3xl mb-4"></i>
-                    <h3 class="text-lg font-semibold mb-2">Marketing Assets</h3>
-                    <p class="text-gray-600 mb-4">Banners, product images, and promotional materials</p>
-                    <button onclick="manageMarketingAssets()" class="text-green-600 hover:text-green-800 font-medium">
-                        View Assets →
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-sms text-2xl text-green-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">SMS Marketing</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Reach affiliates instantly with SMS notifications and alerts</p>
+                    <button onclick="createSMSCampaign()" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+                        Create SMS Campaign
                     </button>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg card-shadow">
-                    <i class="fas fa-life-ring text-purple-600 text-3xl mb-4"></i>
-                    <h3 class="text-lg font-semibold mb-2">Support Center</h3>
-                    <p class="text-gray-600 mb-4">FAQs, contact information, and help documentation</p>
-                    <button onclick="manageSupportCenter()" class="text-purple-600 hover:text-purple-800 font-medium">
-                        Setup Support →
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-images text-2xl text-purple-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Creative Assets</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Manage banners, images, and promotional materials</p>
+                    <button onclick="manageAssets()" class="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700">
+                        Manage Assets
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-trophy text-2xl text-yellow-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Contests & Bonuses</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Create performance contests and bonus programs</p>
+                    <button onclick="createContest()" class="w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700">
+                        Create Contest
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-graduation-cap text-2xl text-indigo-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Training Resources</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Onboarding guides, tutorials, and best practices</p>
+                    <button onclick="manageTraining()" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+                        Manage Training
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-2xl text-pink-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold">AI Content Studio</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Generate marketing content with AI assistance</p>
+                    <button onclick="openAIStudio()" class="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700">
+                        Open AI Studio
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Advanced Analytics</h1>
+                <p class="text-gray-600">Deep insights into your affiliate program performance</p>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Revenue Trend</h3>
+                    <canvas id="revenueChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg card-shadow">
+                    <h3 class="text-lg font-semibold mb-4">Affiliate Performance</h3>
+                    <canvas id="affiliateChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-section" class="section hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Program Settings</h1>
+                <p class="text-gray-600">Configure your affiliate program settings and integrations</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg card-shadow">
+                <h3 class="text-xl font-semibold mb-4">General Settings</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Program Name</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="Demo Fashion Store Affiliates">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Default Currency</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Cookie Duration (days)</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Min Payout Amount</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="50">
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <button onclick="saveAllSettings()" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 text-lg font-semibold">
+                        <i class="fas fa-save mr-2"></i>Save Settings
                     </button>
                 </div>
             </div>
