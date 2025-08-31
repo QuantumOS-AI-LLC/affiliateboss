@@ -1,35 +1,31 @@
 {
-  "name": "affiliate-boss",
-  "version": "3.0.0",
-  "description": "Complete Affiliate Marketing Platform - Production Ready",
+  "name": "affiliate-boss-vercel",
+  "version": "4.0.0",
+  "description": "Complete Affiliate Marketing Platform - Vercel Serverless Edition",
+  "main": "api/index.js",
   "scripts": {
-    "dev": "node server/dev-server.js",
-    "build": "echo 'Building static assets'",
-    "start": "node server/dev-server.js",
+    "dev": "vercel dev",
+    "build": "echo 'Vercel handles the build process'",
+    "start": "vercel dev --listen 3000",
     "deploy": "vercel --prod",
-    "init-db": "node scripts/init-database.js",
-    "seed-db": "node scripts/seed-database.js",
-    "test-api": "node scripts/test-api.js",
-    "clean": "rm -f database.db && npm run init-db && npm run seed-db"
+    "deploy-preview": "vercel",
+    "test": "curl http://localhost:3000/api/health",
+    "init-local": "node -e \"require('./lib/database').initDatabase()\"",
+    "test-api": "node scripts/test-vercel-apis.js"
   },
   "dependencies": {
-    "better-sqlite3": "^9.2.2",
+    "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "uuid": "^9.0.1",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "multer": "^1.4.5-lts.1",
-    "helmet": "^7.1.0",
+    "better-sqlite3": "^9.2.2",
     "dotenv": "^16.3.1",
-    "nodemailer": "^6.9.7",
+    "jsonwebtoken": "^9.0.2",
+    "openai": "^4.20.1",
     "twilio": "^4.19.0",
-    "axios": "^1.6.2"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@vercel/node": "^3.0.0",
-    "vercel": "latest",
-    "nodemon": "^3.0.2"
+    "vercel": "^46.1.1"
   },
   "engines": {
     "node": ">=18"
@@ -39,9 +35,16 @@
     "vercel",
     "serverless",
     "nodejs",
+    "shopify",
+    "sms",
+    "ai",
     "full-stack",
     "production"
   ],
   "author": "Bangladesh Dev Team",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/affiliate-boss-vercel"
+  }
 }
