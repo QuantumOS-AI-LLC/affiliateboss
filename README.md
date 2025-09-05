@@ -4,6 +4,19 @@
 
 **🌐 Live Demo URL**: https://3001-iohsn9sx5z9muydv0zj3e-6532622b.e2b.dev
 
+## 🚀 **Quick Setup**
+
+### **Run Locally in 5 Minutes:**
+```bash
+git clone https://github.com/QuantumOS-AI-LLC/affiliateboss.git
+cd affiliateboss
+npm install
+npm run dev
+# Visit: http://localhost:3000
+```
+
+📋 **[Complete Local Setup Guide →](LOCAL-SETUP.md)** - Comprehensive instructions, troubleshooting, and development workflow
+
 ## Project Overview
 
 **Affiliate Boss** is a comprehensive, production-ready affiliate marketing platform that rivals industry leaders like iDevAffiliate.com. This is a complete, full-stack application with both frontend and backend built and fully functional.
