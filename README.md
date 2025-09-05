@@ -4,12 +4,13 @@
 
 **🌐 Live Demo URL**: https://3001-iohsn9sx5z9muydv0zj3e-6532622b.e2b.dev
 
-## 🚀 **Super Quick Setup - Vite + Express**
+## 🚀 **Choose Your Setup**
 
-### **Run Locally in 30 Seconds:**
+### **🔥 Option 1: Vite + Express (Recommended for Development)**
 ```bash
 git clone https://github.com/QuantumOS-AI-LLC/affiliateboss.git
 cd affiliateboss
+git checkout vite-express
 npm install
 npm run dev
 
@@ -17,11 +18,22 @@ npm run dev
 # ✅ API: http://localhost:3001 (Express server)
 ```
 
-**🔥 New Simple Architecture**: No Vercel complexity - just Vite + Express!
+### **⚡ Option 2: Vercel Serverless (This Branch)**
+```bash
+git clone https://github.com/QuantumOS-AI-LLC/affiliateboss.git
+cd affiliateboss
+npm install
+vercel dev
+
+# ✅ Serverless functions simulation
+# ✅ Ready for Vercel deployment
+```
+
+🌳 **[Branch Comparison Guide →](BRANCHES.md)** - Complete guide to choosing the right branch
 
 📋 **Setup Guides:**
-- **[Vite Setup Guide →](VITE-SETUP.md)** - New simple Vite + Express setup (recommended)
-- **[Complete Local Setup →](LOCAL-SETUP.md)** - Comprehensive guide with troubleshooting
+- **[Vite Setup Guide →](https://github.com/QuantumOS-AI-LLC/affiliateboss/blob/vite-express/VITE-SETUP.md)** - Simple Vite + Express (vite-express branch)
+- **[Complete Local Setup →](LOCAL-SETUP.md)** - Vercel serverless setup (this branch)
 
 ## Project Overview
 
