@@ -4,18 +4,24 @@
 
 **🌐 Live Demo URL**: https://3001-iohsn9sx5z9muydv0zj3e-6532622b.e2b.dev
 
-## 🚀 **Quick Setup**
+## 🚀 **Super Quick Setup - Vite + Express**
 
-### **Run Locally in 5 Minutes:**
+### **Run Locally in 30 Seconds:**
 ```bash
 git clone https://github.com/QuantumOS-AI-LLC/affiliateboss.git
 cd affiliateboss
 npm install
 npm run dev
-# Visit: http://localhost:3000
+
+# ✅ Frontend: http://localhost:3000 (Vite with hot reload)
+# ✅ API: http://localhost:3001 (Express server)
 ```
 
-📋 **[Complete Local Setup Guide →](LOCAL-SETUP.md)** - Comprehensive instructions, troubleshooting, and development workflow
+**🔥 New Simple Architecture**: No Vercel complexity - just Vite + Express!
+
+📋 **Setup Guides:**
+- **[Vite Setup Guide →](VITE-SETUP.md)** - New simple Vite + Express setup (recommended)
+- **[Complete Local Setup →](LOCAL-SETUP.md)** - Comprehensive guide with troubleshooting
 
 ## Project Overview
 
@@ -62,11 +68,11 @@ npm run dev
 - **Architecture**: SPA (Single Page Application) with section-based routing
 
 ### Backend Stack
-- **Runtime**: Vercel Serverless Functions (Node.js 18+)
+- **Runtime**: Express.js server (Node.js 18+)
 - **Database**: SQLite with better-sqlite3 driver
 - **Authentication**: API key-based system
 - **Integrations**: Twilio SMS, OpenAI, Shopify API
-- **File Storage**: Local development, cloud-ready for production
+- **Development**: Hot reload, simple debugging
 
 ### Database Schema
 - **users** - User accounts and profile data
@@ -213,13 +219,14 @@ Analytics & Tracking:
 ## 🛠️ Development Stack Summary
 
 ```
-Frontend: HTML5 + Tailwind CSS + Vanilla JavaScript + Chart.js
-Backend: Vercel Serverless Functions (Node.js)
+Frontend: Vite + HTML5 + Tailwind CSS + Vanilla JavaScript + Chart.js
+Backend: Express.js + Node.js (simple, fast, debuggable)
 Database: SQLite (better-sqlite3)
 APIs: RESTful JSON APIs with CORS support
 Authentication: API key-based system
 Integrations: Twilio, OpenAI, Shopify, QR Server
-Deployment: Vercel-ready with serverless architecture
+Deployment: Flexible - static hosting + API server, or full-stack
+Development: Hot reload, instant updates, simple debugging
 ```
 
 ## 📈 Current Performance Data
